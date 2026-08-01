@@ -75,7 +75,7 @@ function stub(slug: string, navLabel: string, title: string): Ministry {
     navLabel,
     eyebrow: 'من خدماتنا',
     title,
-    description: `سيتوفّر محتوى ${title} قريبًا بإذن الله.`,
+    description: `سيتوفّر محتوى ${title} قريبًا.`,
     servants: [],
     schedule: [],
     archiveSlots: 0,

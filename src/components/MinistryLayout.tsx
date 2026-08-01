@@ -13,7 +13,7 @@ function ComingSoon() {
     <Card tone="sage" className="text-center">
       <SectionLabel>قريبًا</SectionLabel>
       <p className="py-6 text-lg font-bold text-ink">
-        محتوى هذه الخدمة قيد الإعداد، تابعونا قريبًا بإذن الله.
+        محتوى هذه الخدمة قيد الإعداد، تابعونا قريبًا.
       </p>
     </Card>
   )

@@ -23,7 +23,7 @@ export function SiteHeader() {
               <Sun className="text-sun" size={22} strokeWidth={2.2} />
             </span>
           )}
-          <span className="text-lg font-extrabold text-ink">منظمة رسالة أمل</span>
+          <span className="text-lg font-extrabold text-ink">رسالة أمل</span>
         </div>
 
         <nav className="flex flex-wrap items-center gap-1">
