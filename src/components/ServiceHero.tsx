@@ -1,7 +1,7 @@
 import { Card } from './Card'
 import { Button } from './Button'
 import { SectionLabel } from './SectionLabel'
-import { ImageUpload } from './ImageUpload'
+import { Photo } from './Photo'
 import type { Ministry } from '../data/ministries'
 
 /** The main service intro card: eyebrow, title, description, CTAs, image slot. */
@@ -28,7 +28,11 @@ export function ServiceHero({ ministry }: { ministry: Ministry }) {
       </div>
 
       <div className="md:w-60">
-        <ImageUpload label="صورة الخدمة" className="h-44 w-full md:h-full" />
+        <Photo
+          src="/placeholder-photo.svg"
+          alt={`صورة ${ministry.title}`}
+          className="h-40 w-full sm:h-48 md:h-full"
+        />
       </div>
     </Card>
   )

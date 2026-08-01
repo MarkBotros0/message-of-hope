@@ -1,12 +1,17 @@
 import { Card } from './Card'
 import { SectionLabel } from './SectionLabel'
-import { ImageUpload } from './ImageUpload'
+import { Photo } from './Photo'
 import type { Servant } from '../data/ministries'
 
 function ServantCard({ servant }: { servant: Servant }) {
   return (
     <div className="flex flex-col items-center text-center">
-      <ImageUpload variant="circle" label="صورة الخادم" className="w-24" />
+      <Photo
+        variant="circle"
+        src="/placeholder-avatar.svg"
+        alt={`صورة ${servant.name}`}
+        className="w-24"
+      />
       <p className="mt-3 font-bold text-ink">{servant.name}</p>
       <p className="text-sm text-label">{servant.role}</p>
     </div>

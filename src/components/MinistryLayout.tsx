@@ -24,11 +24,11 @@ export function MinistryLayout({ ministry }: { ministry: Ministry }) {
   const published = isPublished(ministry)
 
   return (
-    <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-6 sm:px-6">
+    <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-8">
       <ServiceHero ministry={ministry} />
 
       {published ? (
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
           {/* Right column (RTL: rendered first) */}
           <div className="flex flex-col gap-5">
             {ministry.vision && (
