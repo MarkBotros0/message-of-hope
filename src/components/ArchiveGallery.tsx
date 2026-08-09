@@ -1,59 +1,42 @@
-import { useRef } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Card } from './Card'
-import { SectionLabel } from './SectionLabel'
-import { Photo } from './Photo'
+import { Pending } from './Pending'
+import { Tile } from './Tile'
 
-/** Horizontal, snap-scrolling carousel of archive photos with arrow controls. */
+/** The mosaic tile shapes and gradients of the design's gallery block, cycled
+ *  so any slot count keeps the bento rhythm. */
+const slots = [
+  { span: 'col-span-2 row-span-2', from: '#007848', to: '#8dc63f' },
+  { span: '', from: '#00925a', to: '#e8f3ec' },
+  { span: '', from: '#f7941d', to: '#007848' },
+  { span: 'col-span-2', from: '#5a8a1e', to: '#8dc63f' },
+  { span: 'col-span-2 row-span-2', from: '#8dc63f', to: '#007848' },
+  { span: 'col-span-2', from: '#007848', to: '#00925a' },
+]
+
+/** Archive photo mosaic. No photos have been supplied yet, so the tiles are
+ *  gradient placeholders and the block says so explicitly. */
 export function ArchiveGallery({ count }: { count: number }) {
-  const trackRef = useRef<HTMLDivElement>(null)
-
-  function scrollByPage(sign: number) {
-    const track = trackRef.current
-    if (!track) return
-    track.scrollBy({ left: sign * track.clientWidth * 0.85, behavior: 'smooth' })
-  }
-
-  const arrow =
-    'flex h-8 w-8 items-center justify-center rounded-full border border-line text-body transition hover:border-brand hover:text-brand focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand'
-
   return (
-    <Card>
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <SectionLabel>من أرشيف الخدمة والفعاليات</SectionLabel>
-        <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => scrollByPage(1)}
-            aria-label="السابق"
-            className={arrow}
-          >
-            <ChevronRight size={18} />
-          </button>
-          <button
-            type="button"
-            onClick={() => scrollByPage(-1)}
-            aria-label="التالي"
-            className={arrow}
-          >
-            <ChevronLeft size={18} />
-          </button>
-        </div>
+    <>
+      <div className="grid auto-rows-[110px] grid-cols-4 gap-3 sm:auto-rows-[120px] sm:gap-4">
+        {Array.from({ length: count }).map((_, i) => {
+          const slot = slots[i % slots.length]
+          return (
+            <Tile key={i} static className={slot.span}>
+              <div
+                aria-hidden="true"
+                className="h-full w-full rounded-3xl"
+                style={{
+                  backgroundImage: `linear-gradient(150deg, ${slot.from}, ${slot.to})`,
+                }}
+              />
+            </Tile>
+          )
+        })}
       </div>
-
-      <div
-        ref={trackRef}
-        className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {Array.from({ length: count }).map((_, index) => (
-          <Photo
-            key={index}
-            src="/placeholder-photo.svg"
-            alt="صورة من الأرشيف"
-            className="aspect-[4/3] w-[78%] shrink-0 snap-start sm:w-[45%] lg:w-[31%]"
-          />
-        ))}
-      </div>
-    </Card>
+      <p className="mt-4 flex flex-wrap items-center gap-2 text-sm text-muted">
+        صور الأرشيف
+        <Pending />
+      </p>
+    </>
   )
 }

@@ -1,35 +1,39 @@
 @import 'tailwindcss';
 
 @theme {
-  /* Brand palette — sampled from the رسالة أمل logo */
-  --color-brand: #007a48; /* primary — logo green */
+  /* Brand palette — رسالة أمل logo, matched to the Bento Grid design. */
+  --color-brand: #007848; /* primary — logo green */
   --color-brand-dark: #00613a; /* primary hover */
-  --color-secondary: #f7941d; /* secondary — logo sun orange */
-  --color-secondary-dark: #e07e0a; /* secondary hover */
-  --color-sun: #f7941d;
+  --color-brand-mid: #00925a; /* gradient mid-stop */
   --color-leaf: #8dc63f; /* logo accent green */
-  --color-sage-tint: #e8f3ec; /* tinted card surface */
-  --color-label: #0e8a54; /* section eyebrow labels */
-  --color-ink: #16261d;
-  --color-body: #4c574f;
-  --color-line: #e2e9e2;
+  --color-leaf-dark: #5a8a1e; /* gradient / text on light */
+  --color-sun: #f7941d; /* logo sun orange */
+  --color-ink: #16261d; /* headings and the dark tiles */
+  --color-body: #4c574f; /* body text */
+  --color-muted: #6a756c; /* secondary text — AA on page and tint */
+  --color-on-ink: #a7bbac; /* body text inside the ink tiles */
+  --color-sage-tint: #e8f3ec; /* tinted tile surface */
+  --color-line: #e2e9e2; /* hairline tile edges */
   --color-page: #fbfcfb;
 
-  /* Arabic UI font */
-  --font-sans: 'Cairo', system-ui, 'Segoe UI', sans-serif;
+  /* Type — Alexandria for display, Mada for running text. */
+  --font-sans: 'Mada', system-ui, 'Segoe UI', sans-serif;
+  --font-display: 'Alexandria', system-ui, 'Segoe UI', sans-serif;
 }
 
 @layer base {
+  :root {
+    /* Height of the floating header pill; the الرحمة page stacks a tab bar
+       under it. Anchor offsets are derived from both. */
+    --header-h: 4.5rem;
+    --tabbar-h: 0rem;
+  }
+
   html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-  }
-
-  /* Keep anchored cards clear of the sticky header when scrolled to. */
-  [id] {
-    scroll-margin-top: 5rem;
   }
 
   body {
@@ -38,11 +42,57 @@
     background-color: var(--color-page);
     color: var(--color-body);
     font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.9;
   }
 
   h1,
   h2,
-  h3 {
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    line-height: 1.15;
     color: var(--color-ink);
+  }
+
+  ::selection {
+    background: var(--color-brand);
+    color: #fff;
+  }
+}
+
+@utility scroll-anchor {
+  /* Clear the floating header (and tab bar, where present) when jumped to. */
+  scroll-margin-top: calc(var(--header-h) + var(--tabbar-h) + 1.5rem);
+}
+
+@utility ltr-num {
+  /* Latin-script runs (emails, phone numbers) inside RTL prose. */
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Tab-panel entrance on the الرحمة sub-ministry switch. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
   }
 }

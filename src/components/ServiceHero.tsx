@@ -1,38 +1,84 @@
 import { Button } from './Button'
-import { SectionLabel } from './SectionLabel'
-import type { Ministry } from '../data/ministries'
+import { Reveal } from './Reveal'
+import { Tile } from './Tile'
+import type { Stat } from '../data/ministries'
 
-/** The main service intro card: text fills one half, a full-height image
- *  fills the other half (stacked on mobile). */
-export function ServiceHero({ ministry }: { ministry: Ministry }) {
+interface HeroAction {
+  label: string
+  href: string
+  variant?: 'solid' | 'outline'
+}
+
+interface ServiceHeroProps {
+  eyebrow?: string
+  title: string
+  stats?: Stat[]
+  actions?: HeroAction[]
+}
+
+/** The hero bento: a full-width brand tile, the ministry's headline figures
+ *  beside it, and a wide photo tile closing the block. */
+export function ServiceHero({
+  eyebrow,
+  title,
+  stats = [],
+  actions = [],
+}: ServiceHeroProps) {
   return (
-    <div className="flex flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-sm md:flex-row md:items-stretch">
-      {/* Text half */}
-      <div className="flex flex-col justify-center p-6 sm:p-7 md:w-1/2 md:min-w-0">
-        <SectionLabel>{ministry.eyebrow}</SectionLabel>
-        <h1 className="text-3xl font-black text-ink sm:text-4xl">{ministry.title}</h1>
-        <p className="mt-4 max-w-xl leading-loose text-body">{ministry.description}</p>
+    <Reveal className="py-6 sm:py-10">
+      <div className="grid gap-4 sm:grid-cols-4">
+        <Tile
+          tone="brand"
+          className="relative overflow-hidden p-8 sm:col-span-4 sm:p-12 lg:p-14"
+        >
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute -top-16 -left-10 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.35),transparent_70%)]"
+          />
+          {eyebrow && (
+            <span className="relative mb-5 inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-bold">
+              {eyebrow}
+            </span>
+          )}
+          <h1 className="relative text-4xl font-extrabold text-balance text-white sm:text-6xl lg:text-7xl">
+            {title}
+          </h1>
 
-        {(ministry.contact || ministry.schedule.length > 0) && (
-          <div className="mt-6 flex flex-wrap gap-3">
-            {ministry.contact && <Button href="#contact">تواصل معنا</Button>}
-            {ministry.schedule.length > 0 && (
-              <Button variant="outline" href="#schedule">
-                المواعيد
-              </Button>
-            )}
-          </div>
-        )}
-      </div>
+          {actions.length > 0 && (
+            <div className="relative mt-8 flex flex-wrap gap-3">
+              {actions.map((action) => (
+                <Button
+                  key={action.label}
+                  href={action.href}
+                  variant={action.variant ?? 'solid'}
+                  onBrand
+                >
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          )}
+        </Tile>
 
-      {/* Image half — fills its side of the card edge to edge */}
-      <div className="bg-sage-tint md:w-1/2">
-        <img
-          src="/placeholder-photo.svg"
-          alt={`صورة ${ministry.title}`}
-          className="h-52 w-full object-cover sm:h-64 md:h-full"
-        />
+        {stats.map((stat, i) => (
+          <Tile
+            key={stat.label}
+            tone={i === 0 ? 'leaf' : 'tint'}
+            className={`flex flex-col justify-center p-7 ${
+              stats.length === 1 ? 'sm:col-span-4' : 'sm:col-span-2'
+            }`}
+          >
+            <span
+              className={`font-display text-2xl font-extrabold sm:text-3xl ${
+                i === 0 ? 'text-ink' : 'text-brand'
+              }`}
+            >
+              {stat.value}
+            </span>
+            <p className="mt-1 font-semibold">{stat.label}</p>
+          </Tile>
+        ))}
       </div>
-    </div>
+    </Reveal>
   )
 }

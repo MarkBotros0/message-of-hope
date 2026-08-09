@@ -1,61 +1,38 @@
-import { Card } from './Card'
-import { SectionLabel } from './SectionLabel'
 import { ServiceHero } from './ServiceHero'
-import { VisionCard } from './VisionCard'
-import { ServantsCard } from './ServantsCard'
-import { ContactCard } from './ContactCard'
-import { ScheduleCard } from './ScheduleCard'
-import { ArchiveGallery } from './ArchiveGallery'
-import { isPublished, type Ministry } from '../data/ministries'
+import { SectionBody } from './SectionBody'
+import { SubMinistryTabs } from './SubMinistryTabs'
+import type { Ministry } from '../data/ministries'
 
-function ComingSoon() {
-  return (
-    <Card tone="sage" className="text-center">
-      <SectionLabel>قريبًا</SectionLabel>
-      <p className="py-6 text-lg font-bold text-ink">
-        محتوى هذه الخدمة قيد الإعداد، تابعونا قريبًا.
-      </p>
-    </Card>
-  )
+/** Where the hero's primary call to action should jump — always real content,
+ *  never the pending contact block. */
+function primaryTarget(ministry: Ministry): string {
+  const first = ministry.sections[0]
+  if (first.vision) return '#vision'
+  if (first.goals) return '#goals'
+  if (first.services) return '#services'
+  return '#contact'
 }
 
-/** Bento arrangement of a ministry's cards. Empty sections are skipped. */
 export function MinistryLayout({ ministry }: { ministry: Ministry }) {
-  const published = isPublished(ministry)
+  const multi = ministry.sections.length > 1
+  const first = ministry.sections[0]
 
   return (
-    <main className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-6 sm:gap-6 sm:px-6 sm:py-8">
-      <ServiceHero ministry={ministry} />
+    <main id="main" className="mx-auto max-w-6xl px-4 sm:px-6">
+      <ServiceHero
+        eyebrow={ministry.eyebrow}
+        title={ministry.title}
+        stats={multi ? [] : first.stats}
+        actions={[
+          { label: 'تعرّف على الخدمة', href: primaryTarget(ministry) },
+          { label: 'تواصل معنا', href: '#contact', variant: 'outline' },
+        ]}
+      />
 
-      {published ? (
-        <div className="grid gap-5 sm:gap-6 md:grid-cols-2">
-          {/* Right column (RTL: rendered first) */}
-          <div className="flex flex-col gap-5">
-            {ministry.vision && (
-              <VisionCard vision={ministry.vision} by={ministry.visionBy} />
-            )}
-            {ministry.schedule.length > 0 && (
-              <ScheduleCard
-                schedule={ministry.schedule}
-                location={ministry.location}
-              />
-            )}
-          </div>
-
-          {/* Left column */}
-          <div className="flex flex-col gap-5">
-            {ministry.servants.length > 0 && (
-              <ServantsCard servants={ministry.servants} />
-            )}
-            {ministry.contact && <ContactCard contact={ministry.contact} />}
-          </div>
-        </div>
+      {multi ? (
+        <SubMinistryTabs sections={ministry.sections} />
       ) : (
-        <ComingSoon />
-      )}
-
-      {ministry.archiveSlots > 0 && (
-        <ArchiveGallery count={ministry.archiveSlots} />
+        <SectionBody section={first} />
       )}
     </main>
   )

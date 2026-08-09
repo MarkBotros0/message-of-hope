@@ -1,16 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Mail, MapPin } from 'lucide-react'
 import { ministries } from '../data/ministries'
-
-/** Small green→brand footer heading, echoing the SectionLabel orange mark. */
-function FooterHeading({ children }: { children: string }) {
-  return (
-    <h3 className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
-      <span className="inline-block h-1 w-4 rounded-full bg-secondary" />
-      {children}
-    </h3>
-  )
-}
+import { Pending } from './Pending'
 
 type IconProps = { size?: number }
 
@@ -55,20 +45,34 @@ const socials = [
   { label: 'إنستجرام', href: '#', Icon: InstagramIcon },
 ]
 
+function FooterHeading({ children }: { children: string }) {
+  return (
+    <h4 className="mb-4 font-display text-sm font-bold text-leaf">{children}</h4>
+  )
+}
+
 const linkClass =
   'rounded transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70'
 
+/** Arabic-Indic digits, to match the numerals used across the site. */
+function arabicYear(year: number): string {
+  return String(year).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)])
+}
+
 export function Footer() {
-  const year = new Date().getFullYear()
+  const year = arabicYear(new Date().getFullYear())
 
   return (
-    <footer className="bg-brand text-white">
-      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-        {/* Brand, tagline & socials */}
-        <div className="lg:col-span-2">
-          <p className="text-xl font-extrabold">رسالة أمل</p>
-          <p className="mt-3 max-w-sm leading-loose text-white/75">
-            نخدم كل الأجيال بالكلمة والصلاة والمحبة، ونبني معًا حياةً لها رجاء.
+    <footer className="mt-8 bg-ink text-page">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+        <div>
+          <img
+            src="/logo.png"
+            alt="رسالة أمل"
+            className="mb-4 h-11 w-11 rounded-xl object-contain ring-1 ring-white/15"
+          />
+          <p className="max-w-[28ch] text-[15px] text-on-ink">
+            مساحةٌ للنمو الروحيّ والخدمة والمحبة.
           </p>
           <div className="mt-5 flex items-center gap-2">
             {socials.map(({ label, href, Icon }) => (
@@ -84,10 +88,9 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Ministries */}
         <nav aria-label="روابط الخدمات">
-          <FooterHeading>خدماتنا</FooterHeading>
-          <ul className="space-y-2 text-sm text-white/75">
+          <FooterHeading>الخدمات</FooterHeading>
+          <ul className="grid gap-2.5 text-[15px] text-on-ink">
             {ministries.map((m) => (
               <li key={m.slug}>
                 <Link to={`/${m.slug}`} className={linkClass}>
@@ -98,29 +101,41 @@ export function Footer() {
           </ul>
         </nav>
 
-        {/* Contact */}
         <div>
-          <FooterHeading>تواصل معنا</FooterHeading>
-          <ul className="space-y-3 text-sm text-white/75">
-            <li className="flex items-start gap-2">
-              <MapPin size={16} className="mt-0.5 shrink-0 text-secondary" />
-              {/* TODO: real address */}
-              <span>العنوان يُضاف لاحقًا</span>
+          <FooterHeading>تواصل</FooterHeading>
+          <ul className="grid gap-3 text-[15px] text-on-ink">
+            <li className="flex flex-wrap items-center gap-2">
+              هاتف
+              <Pending tone="dark" />
             </li>
-            <li className="flex items-center gap-2">
-              <Mail size={16} className="shrink-0 text-secondary" />
-              {/* TODO: real email */}
-              <a href="mailto:info@risalatamal.org" dir="ltr" className={linkClass}>
-                info@risalatamal.org
-              </a>
+            <li className="flex flex-wrap items-center gap-2">
+              بريد إلكتروني
+              <Pending tone="dark" />
             </li>
+            <li className="flex flex-wrap items-center gap-2">
+              العنوان
+              <Pending tone="dark" />
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <FooterHeading>تابعنا</FooterHeading>
+          <ul className="grid gap-2.5 text-[15px] text-on-ink">
+            {socials.map(({ label, href }) => (
+              <li key={label}>
+                <a href={href} className={linkClass}>
+                  {label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
 
-      <div className="border-t border-white/15">
-        <div className="mx-auto max-w-6xl px-4 py-5 text-center text-sm text-white/70 sm:px-6">
-          © {year} رسالة أمل · جميع الحقوق محفوظة
+      <div className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-4 py-5 text-sm text-on-ink sm:px-6">
+          © {year} رسالة أمل — جميع الحقوق محفوظة.
         </div>
       </div>
     </footer>
