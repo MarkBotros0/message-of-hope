@@ -110,9 +110,9 @@ export function SectionBody({ section, showStats = false }: SectionBodyProps) {
         <ContactTile />
       </SectionBand>
 
-      {section.archiveSlots ? (
+      {section.archiveSlots || section.archive?.length ? (
         <SectionBand title="من أرشيف الخدمة والفعاليات" className="pb-14">
-          <ArchiveGallery count={section.archiveSlots} />
+          <ArchiveGallery count={section.archiveSlots ?? 0} photos={section.archive} />
         </SectionBand>
       ) : null}
     </>

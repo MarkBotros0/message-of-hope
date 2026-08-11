@@ -16,6 +16,12 @@ export interface Stat {
   label: string
 }
 
+export interface ArchivePhoto {
+  /** Path under `public/archive/` — web-sized copies of the client's originals. */
+  src: string
+  alt: string
+}
+
 export interface NamedItem {
   title: string
   body: string
@@ -48,7 +54,9 @@ export interface MinistrySection {
   audience?: { label: string; items: AudienceItem[] }
   /** Closing paragraph that follows the lists. */
   outro?: string
+  /** Placeholder tile count, used only while `archive` is still empty. */
   archiveSlots?: number
+  archive?: ArchivePhoto[]
 }
 
 export interface Ministry {
@@ -134,6 +142,22 @@ const children: Ministry = {
         ],
       },
       archiveSlots: 6,
+      archive: [
+        {
+          src: '/archive/egyptian-children-class-activities.jpg',
+          alt: 'أطفال يتشاركون نشاطًا تعليميًا حول مقعد واحد داخل الفصل.',
+        },
+        {
+          src: '/archive/egyptian-children-teacher-with-child.jpg',
+          alt: 'مدرّسة تشرح مسألة رياضيات لطفل أمام السبورة.',
+        },
+        // Last of the three lands in the wide banner tile, so it is the one
+        // whose subject survives a letterbox crop.
+        {
+          src: '/archive/egyptian-children-praying-in-class.jpg',
+          alt: 'أطفال يقفون للصلاة مع مشرفتهم في بداية اليوم الدراسي.',
+        },
+      ],
     },
   ],
 }

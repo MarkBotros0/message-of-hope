@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Full-resolution photo originals from the client. Web-sized copies live in
+# public/archive/ and are committed; the multi-megabyte sources are not.
+photos-source
