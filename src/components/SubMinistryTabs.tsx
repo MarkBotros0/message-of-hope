@@ -1,13 +1,25 @@
-import { useId, useState, type CSSProperties } from 'react'
+import { useId, type CSSProperties } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { SectionBody } from './SectionBody'
 import { TabStrip } from './TabStrip'
 import { panelId, tabId } from './tabIds'
-import type { MinistrySection } from '../data/ministries'
+import { sectionIndex, sectionPath, type Ministry } from '../data/ministries'
+
+interface SubMinistryTabsProps {
+  ministry: Ministry
+  /** The `:sub` URL segment; an unknown value falls back to the first tab. */
+  sub?: string
+}
 
 /** Switch between the sub-ministries of a page (خدمة الرحمة and اللاجئون
- *  السودانيون) via a sticky tab bar, so both stay discoverable. */
-export function SubMinistryTabs({ sections }: { sections: MinistrySection[] }) {
-  const [active, setActive] = useState(0)
+ *  السودانيون) via a sticky tab bar.
+ *
+ *  The active tab lives in the URL rather than component state, so each
+ *  sub-ministry is linkable from the nav and survives a refresh or a share. */
+export function SubMinistryTabs({ ministry, sub }: SubMinistryTabsProps) {
+  const navigate = useNavigate()
+  const { sections } = ministry
+  const active = sectionIndex(ministry, sub)
   const prefix = `sub${useId()}`
   const section = sections[active]
 
@@ -18,12 +30,14 @@ export function SubMinistryTabs({ sections }: { sections: MinistrySection[] }) {
         <TabStrip
           labels={sections.map((s) => s.tabLabel ?? s.heading ?? '')}
           active={active}
-          onChange={setActive}
+          onChange={(index) => navigate(sectionPath(ministry, sections[index]))}
           idPrefix={prefix}
         />
       </div>
 
       <div
+        // Re-keyed per section so the entrance animation replays on switch.
+        key={section.slug ?? active}
         id={panelId(prefix, active)}
         role="tabpanel"
         aria-labelledby={tabId(prefix, active)}

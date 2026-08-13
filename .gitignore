@@ -26,3 +26,6 @@ dist-ssr
 # Full-resolution photo originals from the client. Web-sized copies live in
 # public/archive/ and are committed; the multi-megabyte sources are not.
 photos-source
+
+# Local agent/editor tooling.
+.claude

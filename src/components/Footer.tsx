@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ministries } from '../data/ministries'
+import { serviceNav } from '../data/ministries'
 import { Pending } from './Pending'
 
 type IconProps = { size?: number }
@@ -88,14 +88,37 @@ export function Footer() {
           </div>
         </div>
 
-        <nav aria-label="روابط الخدمات">
-          <FooterHeading>الخدمات</FooterHeading>
+        {/* Mirrors the header so the footer is a complete second route to
+            everything, sub-ministries included. */}
+        <nav aria-label="روابط الموقع">
+          <FooterHeading>الموقع</FooterHeading>
           <ul className="grid gap-2.5 text-[15px] text-on-ink">
-            {ministries.map((m) => (
-              <li key={m.slug}>
-                <Link to={`/${m.slug}`} className={linkClass}>
-                  {m.navLabel}
+            <li>
+              <Link to="/" className={linkClass}>
+                الرئيسية
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className={linkClass}>
+                من نحن
+              </Link>
+            </li>
+            {serviceNav.map((service) => (
+              <li key={service.path}>
+                <Link to={service.path} className={linkClass}>
+                  {service.label}
                 </Link>
+                {service.children && (
+                  <ul className="mt-2 ms-2 grid gap-2 border-s border-white/15 ps-3 text-[14px] text-on-ink/85">
+                    {service.children.map((child) => (
+                      <li key={child.path}>
+                        <Link to={child.path} className={linkClass}>
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>

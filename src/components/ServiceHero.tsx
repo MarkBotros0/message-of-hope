@@ -12,6 +12,9 @@ interface HeroAction {
 interface ServiceHeroProps {
   eyebrow?: string
   title: string
+  /** Supporting paragraph under the headline. The service pages carry their
+   *  intro in a band of its own, so only the site-level pages set this. */
+  description?: string
   stats?: Stat[]
   actions?: HeroAction[]
 }
@@ -21,6 +24,7 @@ interface ServiceHeroProps {
 export function ServiceHero({
   eyebrow,
   title,
+  description,
   stats = [],
   actions = [],
 }: ServiceHeroProps) {
@@ -43,6 +47,12 @@ export function ServiceHero({
           <h1 className="relative text-4xl font-extrabold text-balance text-white sm:text-6xl lg:text-7xl">
             {title}
           </h1>
+
+          {description && (
+            <p className="relative mt-6 max-w-[62ch] text-lg leading-loose text-white/90">
+              {description}
+            </p>
+          )}
 
           {actions.length > 0 && (
             <div className="relative mt-8 flex flex-wrap gap-3">

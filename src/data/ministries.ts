@@ -38,6 +38,9 @@ export interface AudienceItem {
 }
 
 export interface MinistrySection {
+  /** URL segment for a sub-ministry (`/mercy/sudanese`). Required on pages with
+   *  more than one section so each is linkable from the nav. */
+  slug?: string
   /** Heading shown when a page carries more than one sub-ministry. */
   heading?: string
   /** Short label for the sub-ministry tab (falls back to heading). */
@@ -64,6 +67,9 @@ export interface Ministry {
   navLabel: string
   title: string
   eyebrow?: string
+  /** One-line summary for the nav menu and the service tiles. Condensed from
+   *  this ministry's own source text — no new claims are introduced. */
+  navBlurb?: string
   sections: MinistrySection[]
 }
 
@@ -75,6 +81,8 @@ const children: Ministry = {
   navLabel: 'الطفل المصري',
   eyebrow: 'من خدماتنا',
   title: 'خدمة الطفل المصري',
+  navBlurb:
+    'فصول تعليمية ومدرسة صيفية وخدمات صحية وروحية لأطفال القرى الأكثر احتياجًا.',
   sections: [
     {
       visionLabel: 'رؤية خدمة الطفل المصري',
@@ -170,6 +178,8 @@ const women: Ministry = {
   navLabel: 'المرأة',
   eyebrow: 'من خدماتنا',
   title: 'خدمة المرأة',
+  navBlurb:
+    'تلمذة ومجموعات دعم وتمكين اقتصادي للسيدات المعيلات واللاجئات.',
   sections: [
     {
       heading: 'نبذة عن البرنامج',
@@ -217,8 +227,11 @@ const mercy: Ministry = {
   navLabel: 'الرحمة',
   eyebrow: 'من خدماتنا',
   title: 'خدمة الرحمة',
+  navBlurb:
+    'دعم إنساني عملي للأسر الأكثر احتياجًا، وللاجئين السودانيين في مصر.',
   sections: [
     {
+      slug: 'relief',
       eyebrow: 'خدمة الرحمة',
       heading: 'خدمة الرحمة',
       tabLabel: 'خدمة الرحمة',
@@ -245,6 +258,7 @@ const mercy: Ministry = {
       archiveSlots: 6,
     },
     {
+      slug: 'sudanese',
       eyebrow: 'خدمة الرحمة',
       heading: 'اللاجئون السودانيون في مصر',
       tabLabel: 'اللاجئون السودانيون',
@@ -268,3 +282,51 @@ export const ministries: Ministry[] = [children, women, mercy]
 export function getMinistry(slug: string | undefined): Ministry | undefined {
   return ministries.find((m) => m.slug === slug)
 }
+
+/** Which sub-ministry the `:sub` URL segment selects; falls back to the first
+ *  so an unknown or missing segment still renders a real page. */
+export function sectionIndex(ministry: Ministry, sub: string | undefined): number {
+  const i = ministry.sections.findIndex((s) => s.slug === sub)
+  return i === -1 ? 0 : i
+}
+
+export function sectionPath(ministry: Ministry, section: MinistrySection): string {
+  return section.slug ? `/${ministry.slug}/${section.slug}` : `/${ministry.slug}`
+}
+
+export interface NavNode {
+  label: string
+  path: string
+  blurb?: string
+  children?: NavNode[]
+}
+
+/** The الخدمات menu, derived from the ministries so the two never drift. */
+export const serviceNav: NavNode[] = ministries.map((m) => ({
+  label: m.navLabel,
+  path: `/${m.slug}`,
+  blurb: m.navBlurb,
+  children:
+    m.sections.length > 1
+      ? m.sections.map((s) => ({
+          label: s.tabLabel ?? s.heading ?? '',
+          path: sectionPath(m, s),
+        }))
+      : undefined,
+}))
+
+/** Site-level copy for the home and من نحن pages. Both lines condense the three
+ *  ministries' own text; the document carries no organisational profile, so
+ *  anything beyond that stays a PENDING placeholder. */
+export const site = {
+  name: 'رسالة أمل',
+  tagline: 'خدمة الطفل المصري · خدمة المرأة · خدمة الرحمة',
+  intro:
+    'نعمل مع الأسر والمجتمعات الأكثر احتياجًا في مصر: أطفال القرى الفقيرة، والسيدات اللاتي يتحملن مسؤولية إعالة أسرهن، والأسر واللاجئون الذين يحتاجون إلى دعم إنساني عملي.',
+} as const
+
+/** Photos already supplied by the client, surfaced on the home page so the
+ *  archive is not buried inside a single service page. */
+export const highlightPhotos: ArchivePhoto[] = ministries.flatMap((m) =>
+  m.sections.flatMap((s) => s.archive ?? []),
+)
