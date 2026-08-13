@@ -29,3 +29,20 @@ There is no test runner configured. `npm run build` is the primary correctness g
 - `src/App.tsx` — root component (currently the starter template).
 - `public/` — static assets served at the root path (e.g. `/icons.svg`, referenced via `<use href="/icons.svg#...">` in App.tsx).
 - `src/assets/` — assets imported through the bundler (fingerprinted).
+
+## Git and GitHub
+
+This repo is `MarkBotros0/message-of-hope`. Several GitHub accounts are
+authenticated via `gh` on this machine, and **only `MarkBotros0` has write
+access here** — a push under any other account fails with a 403
+(`Permission ... denied`).
+
+Before pushing, confirm the active account and switch if needed:
+
+```bash
+gh auth status && gh auth switch --user MarkBotros0
+```
+
+`gh auth switch` changes the active account globally, so it also affects other
+repos on this machine. `MarkBotros0` owns both this repo and `new-hope`, so
+leaving it active is the right default.
