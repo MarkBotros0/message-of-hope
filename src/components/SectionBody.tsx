@@ -17,21 +17,15 @@ interface SectionBodyProps {
 export function SectionBody({ section }: SectionBodyProps) {
   return (
     <>
-      {(section.heading || section.intro?.length) && (
-        <SectionBand title={section.heading} banner>
-          {section.intro?.length ? (
-            <Tile className="p-7 sm:p-9">
-              <div className="mx-auto max-w-[75ch] space-y-5">
-                {section.intro.map((text) => (
-                  <p key={text} className="leading-loose">
-                    {text}
-                  </p>
-                ))}
-              </div>
-            </Tile>
-          ) : null}
+      {section.intro?.length ? (
+        <SectionBand>
+          <QuoteTile
+            label={section.heading}
+            text={section.intro}
+            variant="card"
+          />
         </SectionBand>
-      )}
+      ) : null}
 
       {section.vision && (
         <SectionBand id="vision">
@@ -91,8 +85,8 @@ export function SectionBody({ section }: SectionBodyProps) {
 
       {section.outro && (
         <SectionBand>
-          <Tile tone="tint" className="p-7 sm:p-9">
-            <p className="mx-auto max-w-[75ch] leading-loose">{section.outro}</p>
+          <Tile tone="tint" className="mx-auto max-w-[82ch] p-6 sm:p-8">
+            <p className="leading-loose">{section.outro}</p>
           </Tile>
         </SectionBand>
       )}
