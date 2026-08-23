@@ -36,9 +36,9 @@ export function SectionBody({ section }: SectionBodyProps) {
       {section.vision && (
         <SectionBand id="vision">
           <QuoteTile
-            label={section.visionLabel ?? 'الرؤية'}
+            label={section.visionLabel ?? 'رؤيتنا'}
             text={section.vision}
-            size={section.vision.length > 320 ? 'prose' : 'display'}
+            variant="card"
           />
         </SectionBand>
       )}
