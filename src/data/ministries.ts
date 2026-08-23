@@ -4,8 +4,10 @@
 // present in that document is used here; anything the document does not provide
 // (contact details, photos) is left as PENDING and shown as a placeholder.
 //
-// The document names «أمل جديد» in two places (the خدمة السيدات opening paragraph
-// and the Sudanese-refugees paragraph). That wording is kept verbatim.
+// The client's document names «أمل جديد» in two places (the خدمة السيدات opening
+// paragraph and the Sudanese-refugees paragraph) — it was drafted for the sibling
+// organisation. Both now read «رسالة أمل». That substitution is the only edit made
+// to the document's wording anywhere in this file.
 // ---------------------------------------------------------------------------
 
 /** Marker shown wherever the client still needs to supply real data. */
@@ -195,7 +197,7 @@ const women: Ministry = {
     {
       heading: 'نبذة عن البرنامج',
       intro: [
-        'انطلقت خدمة السيدات في خدمة أمل جديد استجابةً لاحتياجات النساء اللاتي يتحملن مسؤولية إعالة أسرهن في ظروف حياتية صعبة، سواء من السيدات المعيلات في المجتمعات المحلية أو السيدات اللاجئات اللاتي يواجهن تحديات اقتصادية واجتماعية وروحية نتيجة ظروف النزوح واللجوء.',
+        'انطلقت خدمة السيدات في خدمة رسالة أمل استجابةً لاحتياجات النساء اللاتي يتحملن مسؤولية إعالة أسرهن في ظروف حياتية صعبة، سواء من السيدات المعيلات في المجتمعات المحلية أو السيدات اللاجئات اللاتي يواجهن تحديات اقتصادية واجتماعية وروحية نتيجة ظروف النزوح واللجوء.',
       ],
       stats: [{ value: 'من ١٨ إلى ٤٥ عامًا', label: 'الفئة العمرية' }],
       visionLabel: 'هدف البرنامج',
@@ -298,7 +300,7 @@ const mercy: Ministry = {
       heading: 'اللاجئون السودانيون في مصر',
       tabLabel: 'اللاجئون السودانيون',
       intro: [
-        'مع وصول أعداد كبيرة من اللاجئين السودانيين إلى مصر، بدأت أمل جديد في تقديم دعم إنساني للأسر الأكثر احتياجًا، استجابةً للظروف الصعبة التي يواجهها العديد من اللاجئين.',
+        'مع وصول أعداد كبيرة من اللاجئين السودانيين إلى مصر، بدأت رسالة أمل في تقديم دعم إنساني للأسر الأكثر احتياجًا، استجابةً للظروف الصعبة التي يواجهها العديد من اللاجئين.',
       ],
       services: {
         label: 'وتشمل هذه الجهود',
