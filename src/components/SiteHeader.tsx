@@ -53,14 +53,17 @@ export function SiteHeader() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-3 py-2 shadow-[0_12px_30px_-22px_rgba(0,120,72,0.4)] backdrop-blur-lg">
         <Link
           to="/"
-          className="flex shrink-0 items-center gap-2.5 rounded-full pr-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          // The logo carries the name in its own artwork, so no wordmark beside
+          // it. The link's accessible name is the aria-label below.
+          className="flex shrink-0 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
           aria-label="رسالة أمل — الصفحة الرئيسية"
         >
           {logoOk ? (
             <img
-              src="/logo.png"
+              src="/logo-mark.png"
               alt=""
-              className="h-10 w-10 rounded-xl object-contain"
+              // The mark carries its own rounded plate, so no clipping here.
+              className="h-11 w-11 object-contain"
               onError={() => setLogoOk(false)}
             />
           ) : (
@@ -68,9 +71,6 @@ export function SiteHeader() {
               <Sun className="text-sun" size={20} strokeWidth={2.2} />
             </span>
           )}
-          <span className="hidden font-display text-base font-bold text-ink sm:inline">
-            رسالة أمل
-          </span>
         </Link>
 
         {/* Desktop / tablet nav */}

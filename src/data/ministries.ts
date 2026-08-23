@@ -70,6 +70,12 @@ export interface Ministry {
   /** One-line summary for the nav menu and the service tiles. Condensed from
    *  this ministry's own source text — no new claims are introduced. */
   navBlurb?: string
+  /** Photo leading this service's card on the home page. The client has only
+   *  supplied the three خدمة الطفل المصري photos so far, so خدمة المرأة and
+   *  خدمة الرحمة borrow one each rather than sit behind a placeholder —
+   *  replace these the moment their own photos arrive. The card treats the
+   *  image as decorative, so no alt text claims it shows that service. */
+  cardPhoto?: ArchivePhoto
   sections: MinistrySection[]
 }
 
@@ -83,6 +89,10 @@ const children: Ministry = {
   title: 'خدمة الطفل المصري',
   navBlurb:
     'فصول تعليمية ومدرسة صيفية وخدمات صحية وروحية لأطفال القرى الأكثر احتياجًا.',
+  cardPhoto: {
+    src: '/archive/egyptian-children-class-activities.jpg',
+    alt: 'أطفال يتشاركون نشاطًا تعليميًا حول مقعد واحد داخل الفصل.',
+  },
   sections: [
     {
       visionLabel: 'رؤية خدمة الطفل المصري',
@@ -180,6 +190,12 @@ const women: Ministry = {
   title: 'خدمة المرأة',
   navBlurb:
     'تلمذة ومجموعات دعم وتمكين اقتصادي للسيدات المعيلات واللاجئات.',
+  // Borrowed — the client has no خدمة المرأة photo yet. This one at least
+  // leads with an adult woman rather than a classroom of children.
+  cardPhoto: {
+    src: '/archive/egyptian-children-teacher-with-child.jpg',
+    alt: 'مدرّسة تشرح مسألة رياضيات لطفل أمام السبورة.',
+  },
   sections: [
     {
       heading: 'نبذة عن البرنامج',
@@ -229,6 +245,11 @@ const mercy: Ministry = {
   title: 'خدمة الرحمة',
   navBlurb:
     'دعم إنساني عملي للأسر الأكثر احتياجًا، وللاجئين السودانيين في مصر.',
+  // Borrowed — see the note on `cardPhoto`.
+  cardPhoto: {
+    src: '/archive/egyptian-children-praying-in-class.jpg',
+    alt: 'أطفال يقفون للصلاة مع مشرفتهم في بداية اليوم الدراسي.',
+  },
   sections: [
     {
       slug: 'relief',
@@ -298,6 +319,8 @@ export interface NavNode {
   label: string
   path: string
   blurb?: string
+  /** The service's card photo, used by the home page's service tiles. */
+  photo?: ArchivePhoto
   children?: NavNode[]
 }
 
@@ -306,6 +329,7 @@ export const serviceNav: NavNode[] = ministries.map((m) => ({
   label: m.navLabel,
   path: `/${m.slug}`,
   blurb: m.navBlurb,
+  photo: m.cardPhoto,
   children:
     m.sections.length > 1
       ? m.sections.map((s) => ({
