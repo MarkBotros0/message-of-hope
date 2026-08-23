@@ -23,7 +23,7 @@ export function ServicesTile({ items }: { items: string[] }) {
               <Icon size={18} aria-hidden="true" />
             </span>
             {/* Start-aligned so an entry that wraps keeps one edge. */}
-            <span className="text-start text-sm leading-relaxed font-semibold text-body">
+            <span className="text-start text-base leading-relaxed font-semibold text-body">
               {item}
             </span>
           </li>

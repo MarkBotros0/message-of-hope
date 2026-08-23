@@ -34,7 +34,7 @@ export function GoalsGrid({ items }: { items: NamedItem[] }) {
           <p className="mt-4 leading-loose text-body">{item.body}</p>
 
           {item.notes && (
-            <ul className="mt-5 space-y-3 border-t border-brand/15 pt-5 text-[0.95rem] leading-loose text-body">
+            <ul className="mt-5 space-y-3 border-t border-brand/15 pt-5 text-base leading-loose text-body">
               {item.notes.map((note) => (
                 <li key={note} className="flex gap-3">
                   <span

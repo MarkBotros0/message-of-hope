@@ -33,7 +33,8 @@ export interface AudienceItem {
   value: string
   /** Percentage share of the programme's focus, where the document gives one. */
   share?: string
-  /** هدف رئيسي / هدف فرعي */
+  /** هدف رئيسي / هدف فرعي. Kept from the source document, but nothing renders
+   *  it — see the note on `AudienceTile`. */
   priority?: string
 }
 

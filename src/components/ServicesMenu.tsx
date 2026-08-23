@@ -126,7 +126,7 @@ export function ServicesMenu({ active }: { active: boolean }) {
                     {service.blurb && (
                       <span
                         id={`${panelId}${service.path}`}
-                        className="mt-1 block text-xs leading-relaxed text-muted"
+                        className="mt-1 block text-sm leading-relaxed text-muted"
                       >
                         {service.blurb}
                       </span>

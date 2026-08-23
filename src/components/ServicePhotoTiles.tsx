@@ -49,7 +49,7 @@ export function ServicePhotoTiles() {
 
             <div className="flex flex-1 flex-col p-6">
               {service.blurb && (
-                <p className="text-[15px] leading-loose">{service.blurb}</p>
+                <p className="text-base leading-loose">{service.blurb}</p>
               )}
 
               {/* The tile's only link. Every tile would otherwise announce the
