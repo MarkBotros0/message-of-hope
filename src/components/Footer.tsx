@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Mail, MapPin, Phone, Share2 } from 'lucide-react'
 import { serviceNav } from '../data/ministries'
 import { Pending } from './Pending'
+import { toArabicNumeral } from './numerals'
 
 function FooterHeading({ children }: { children: string }) {
   return (
@@ -25,13 +26,8 @@ const pendingContact = [
   { key: 'social', Icon: Share2, label: 'حسابات التواصل' },
 ]
 
-/** Arabic-Indic digits, to match the numerals used across the site. */
-function arabicYear(year: number): string {
-  return String(year).replace(/\d/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)])
-}
-
 export function Footer() {
-  const year = arabicYear(new Date().getFullYear())
+  const year = toArabicNumeral(new Date().getFullYear())
 
   return (
     <footer className="bg-ink text-page">

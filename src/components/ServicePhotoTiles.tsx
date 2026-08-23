@@ -8,8 +8,8 @@ import { serviceNav } from '../data/ministries'
  *  Only "تعرّف على الخدمة" is clickable — the tile and its title are not links,
  *  so there is one obvious target rather than a whole panel that navigates.
  *
- *  The text-only variant on من نحن is `ServiceTiles`; that one still lists each
- *  service's sub-sections, which these deliberately leave to the nav. */
+ *  Sub-services are left to the nav and the footer; a tile names its service
+ *  and nothing below it. */
 export function ServicePhotoTiles() {
   return (
     <ul className="grid gap-4 md:grid-cols-3">

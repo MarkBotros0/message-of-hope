@@ -1,50 +1,87 @@
-import { ServiceHero } from '../components/ServiceHero'
 import { SectionBand } from '../components/SectionBand'
-import { ServiceTiles } from '../components/ServiceTiles'
-import { ContactTile } from '../components/ContactTile'
-import { Pending } from '../components/Pending'
+import { TenetTiles } from '../components/TenetTiles'
 import { Tile } from '../components/Tile'
-import { site } from '../data/ministries'
+import { about } from '../data/ministries'
 
-/** من نحن — the organisation at a glance.
- *
- *  Composed from the service pages' own content. The client's document carries
- *  no founding story or organisational profile, so that band stays an explicit
- *  PENDING placeholder rather than invented copy. */
+/** A labelled row inside the رؤية/مهمة spread: the label takes a narrow fixed
+ *  column and the text the rest, so both rows share one label edge. The columns
+ *  only split from `md` — below that the label stacks above its text, where a
+ *  9rem column would leave the prose nothing to sit in. */
+const aboutRow = 'grid gap-4 p-7 sm:p-9 md:grid-cols-[9rem_1fr] md:gap-10'
+
+/** من نحن — the organisation's own statement of itself: vision, mission, the
+ *  three goals the work rests on, and the seven values it is held to. Every
+ *  line is the client's own text (see `about` in `data/ministries`). */
 export function AboutPage() {
   return (
-    <main id="main" className="mx-auto max-w-6xl px-4 sm:px-6">
-      <ServiceHero
-        eyebrow={site.tagline}
-        title="من نحن"
-        description={site.intro}
-        actions={[
-          { label: 'مجالات خدمتنا', href: '#areas' },
-          { label: 'تواصل معنا', href: '#contact', variant: 'outline' },
-        ]}
-      />
+    <main id="main">
+      {/* The banner is the whole opening: the photo is the statement, and the
+          page's own title follows on the tiles below rather than fighting a
+          scrim. Full-bleed on phones and framed as a tile from `sm`, the same
+          way the home carousel sits. */}
+      <div className="mx-auto max-w-6xl sm:px-6 sm:pt-8">
+        <div className="h-72 overflow-hidden border-b border-line shadow-card sm:h-[26rem] sm:rounded-3xl sm:border lg:h-[32rem]">
+          {/* Taller than the photo's own 2.83:1 would give at this width.
+              `object-cover` scales it up and trims the sides rather than
+              distorting it — the globe and hands sit centre frame, so the crop
+              takes only sky. */}
+          <img
+            src="/about-hero.jpg"
+            alt="يدان تحملان الكرة الأرضية وقد أضاءت عليها حدود مصر، وحمائم بيضاء تحلّق حولها في سماء عند الغروب"
+            fetchPriority="high"
+            className="h-full w-full object-cover object-center"
+          />
+        </div>
+      </div>
 
-      <SectionBand
-        id="areas"
-        title="أين نخدم"
-        lead="ثلاثة مجالات رئيسية، وتحت خدمة الرحمة قسمان."
-      >
-        <ServiceTiles />
-      </SectionBand>
+      {/* The page still needs to say what it is to screen readers and to
+          search — the heading is kept, just not drawn. */}
+      <h1 className="sr-only">من نحن</h1>
 
-      <SectionBand title="نبذة عن المؤسسة">
-        <Tile tone="tint" className="p-7 sm:p-9">
-          <p className="max-w-[75ch] leading-loose">
-            نبذة تعريفية عن نشأة الخدمة وهيكلها التنظيمي وشركائها — بانتظار
-            النص من المؤسسة.
-          </p>
-          <Pending className="mt-4" />
-        </Tile>
-      </SectionBand>
+      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+        {/* One tile, two labelled rows, rather than two stacked tiles. The
+            label sits in its own narrow column with the text beside it, so a
+            one-line vision and a two-paragraph mission each fill their row
+            instead of leaving a tile mostly empty, and the pair reads as one
+            statement of purpose with two parts. */}
+        <SectionBand title="رؤيتنا ومهمتنا" banner>
+          <Tile className="overflow-hidden">
+            <div className={aboutRow}>
+              <div>
+                <h3 className="font-display text-lg font-extrabold">رؤيتنا</h3>
+                <span className="mt-2 block h-1 w-10 rounded-full bg-leaf" />
+              </div>
+              {/* The vision outranks the mission prose on size, not on weight —
+                  it is the aspiration the rest of the page answers to. */}
+              <p className="text-xl leading-[1.9] text-ink sm:text-2xl sm:leading-[1.8]">
+                {about.vision}
+              </p>
+            </div>
 
-      <SectionBand id="contact" className="pb-14">
-        <ContactTile />
-      </SectionBand>
+            <div className={`border-t border-line ${aboutRow}`}>
+              <div>
+                <h3 className="font-display text-lg font-extrabold">مهمتنا</h3>
+                <span className="mt-2 block h-1 w-10 rounded-full bg-leaf" />
+              </div>
+              <div className="space-y-4">
+                {about.mission.map((paragraph) => (
+                  <p key={paragraph} className="leading-loose">
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+          </Tile>
+        </SectionBand>
+
+        <SectionBand id="goals" title="أهدافنا الأساسية" banner>
+          <TenetTiles items={about.goals} columns={3} />
+        </SectionBand>
+
+        <SectionBand id="values" title="قيمنا الأساسية" className="pb-14" banner>
+          <TenetTiles items={about.values} columns={2} />
+        </SectionBand>
+      </div>
     </main>
   )
 }

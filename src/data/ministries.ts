@@ -346,8 +346,7 @@ export const serviceNav: NavNode[] = ministries.map((m) => ({
 }))
 
 /** Site-level copy for the home and من نحن pages. Both lines condense the three
- *  ministries' own text; the document carries no organisational profile, so
- *  anything beyond that stays a PENDING placeholder. */
+ *  ministries' own text. */
 export const site = {
   name: 'رسالة أمل',
   tagline: 'خدمة الطفل المصري · خدمة السيدات · خدمة الرحمة',
@@ -360,3 +359,83 @@ export const site = {
 export const highlightPhotos: ArchivePhoto[] = ministries.flatMap((m) =>
   m.sections.flatMap((s) => s.archive ?? []),
 )
+
+/** A named statement — one of the أهداف the work rests on, or one of the قيم
+ *  it is held to. */
+export interface Tenet {
+  title: string
+  /** The English name the client's document gives alongside the Arabic. Kept
+   *  in the data but not drawn: the tiles take the Arabic alone. */
+  titleEn: string
+  body: string
+}
+
+// ---------------------------------------------------------------------------
+// من نحن — the organisation's own statement of identity: vision, mission, the
+// three goals the work rests on, and the seven values it is held to. This is
+// the shared statement of purpose, carried across from أمل جديد's document
+// with the organisation's own name in place of theirs; nothing is paraphrased
+// beyond that substitution.
+// ---------------------------------------------------------------------------
+export const about = {
+  vision:
+    'أن نمجّد الله من خلال الوصول إلى المحتاجيين لرسالة الرجاء في المسيح.',
+  mission: [
+    'نلتزم في رسالة أمل بأن نُعلن محبة المسيح ورجاءه في كنائسنا، من خلال الوصول للناس غير الموصول إليهم برسالة الإنجيل، ومرافقتهم في مسيرة تلمذة حيّة، وتمكين الكنائس لتعيش دعوتها وتخدم مجتمعاتها بفعالية.',
+    'نحرص أن نحقق هذا الالتزام بالشراكة مع الكنائس المحلية، وبطرق تحترم السياقات الثقافية والاجتماعية، وتُراعي احتياجات الأفراد والمجتمعات.',
+  ],
+  goals: [
+    {
+      title: 'الكرازة',
+      titleEn: 'Evangelism',
+      body: 'مشاركة الناس برسالة محبة المسيح وخلاصه، ودعوتهم لاتباعه كتلاميذ حقيقيين يعيشون له ويشبهونه. مع مراعاة السياقات الثقافية والاجتماعية، والحساسية الدينية والسياسية، وخصوصية كل الفئات المختلفة.',
+    },
+    {
+      title: 'التلمذة',
+      titleEn: 'Discipleship',
+      body: 'مسيرة مستمرة نعيشها مع أشخاص يسعون لاتباع المسيح، تشمل التعليم، والتشكيل الروحي، والرعاية، بهدف أن ينمو التلميذ ليحيا بحسب صورة المسيح، ويشارك الإنجيل مع الآخرين — مع مراعاة اختلاف النِسب بين هذه المكونات حسب مرحلة النضج الروحي، والاحتياجات النفسية، والسياق الثقافي، والعمر.',
+    },
+    {
+      title: 'تمكين الكنائس',
+      titleEn: 'Church Empowerment',
+      body: 'العمل مع الكنائس المحلية لتشجيعها وتقويتها لتعيش دعوتها كجسد حيّ للمسيح، ينمو في العمق الروحي، ويُعبّر عمليًا عن محبة المسيح من خلال أعمال الرحمة. يشمل ذلك بناء القدرات (Capacity Building) للقادة والفرق والخدمات، مع مراعاة السياق المحلي واحتياجات كل كنيسة ودورها في مجتمعها.',
+    },
+  ] as Tenet[],
+  values: [
+    {
+      title: 'النزاهة',
+      titleEn: 'Integrity',
+      body: 'نلتزم بالشفافية والأمانة في خدمتنا وعلاقاتنا ووقتنا ومواردنا أمام الله والآخرين.',
+    },
+    {
+      title: 'المسؤولية',
+      titleEn: 'Accountability',
+      body: 'نلتزم بمحاسبة بعضنا البعض بالمحبة ووضع أهداف للمشاريع وفريق العمل نعمل معًا لتحقيقها.',
+    },
+    {
+      title: 'القيادة الخادمة',
+      titleEn: 'Servant Leadership',
+      body: 'قيادتنا الخدمية ملتزمة بالخدمة بمحبة وتواضع وصدق ودعم وتوجيه وكرم وغفران وانضباط ذاتي.',
+    },
+    {
+      title: 'العمل الجماعي',
+      titleEn: 'Teamwork',
+      body: 'فريقنا هو أعظم أصولنا. معًا نشكل جزءًا من جسد المسيح، نحترم تميز كل منا، ونسعى للعيش وفق تعاليم المسيح.',
+    },
+    {
+      title: 'الشراكة',
+      titleEn: 'Partnership',
+      body: 'نلتزم بالشراكة مع الكنائس المحلية والمنظمات ذات التفكير المماثل لنشر أمل ومحبة المسيح.',
+    },
+    {
+      title: 'الإبداع',
+      titleEn: 'Creativity',
+      body: 'ندعم ونشجع النهج الإبداعي والمبتكر الذي يعكس قلب يسوع في الخدمة.',
+    },
+    {
+      title: 'الرحمة',
+      titleEn: 'Compassion',
+      body: 'نلتزم باتباع مثال يسوع الذي تأثر بالرحمة تجاه احتياجات البشر في عالم ساقط، بمحبة ومساعدة المهمشين والمضطهدين دينيًا أو اجتماعيًا.',
+    },
+  ] as Tenet[],
+}
