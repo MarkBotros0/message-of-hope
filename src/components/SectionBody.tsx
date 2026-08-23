@@ -3,7 +3,6 @@ import { ProseCard } from './ProseCard'
 import { GoalsGrid } from './GoalsGrid'
 import { ServicesTile } from './ServicesTile'
 import { AudienceTile } from './AudienceTile'
-import { Tile } from './Tile'
 import type { MinistrySection } from '../data/ministries'
 
 interface SectionBodyProps {
@@ -11,9 +10,9 @@ interface SectionBodyProps {
 }
 
 /** Renders every band a ministry section can have, in reading order:
- *  intro → vision → goals → services → target groups → closing.
- *  Bands with no data are skipped. Contact details are the footer's job on
- *  every page, so a service page ends on its own closing paragraph. */
+ *  intro → vision → goals → services → target groups. Bands with no data are
+ *  skipped. Contact details are the footer's job on every page, so a service
+ *  page ends on its last band of content. */
 export function SectionBody({ section }: SectionBodyProps) {
   return (
     <>
@@ -71,13 +70,6 @@ export function SectionBody({ section }: SectionBodyProps) {
         </SectionBand>
       )}
 
-      {section.outro && (
-        <SectionBand>
-          <Tile tone="tint" className="mx-auto max-w-[82ch] p-6 sm:p-8">
-            <p className="leading-loose">{section.outro}</p>
-          </Tile>
-        </SectionBand>
-      )}
     </>
   )
 }

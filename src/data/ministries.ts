@@ -61,7 +61,8 @@ export interface MinistrySection {
   goals?: { label: string; items: NamedItem[] }
   services?: { label: string; items: string[] }
   audience?: { label: string; items: AudienceItem[] }
-  /** Closing paragraph that follows the lists. */
+  /** Closing paragraph that follows the lists. Kept, but nothing renders it
+   *  — on the page it was one lone card hanging under the grids. */
   outro?: string
   /** Photos the client has supplied for this section. They feed the home
    *  carousel; the service pages no longer carry a gallery of their own. */
@@ -210,7 +211,7 @@ const women: Ministry = {
         items: [
           'التلمذة والنمو الروحي',
           'مجموعات الدعم والمساندة المتبادلة',
-          'التدريب والتمكين الاقتصادي من خلال نماذج متنوعة تتناسب مع احتياجات الفئات المستهدفة، مثل دعم المشروعات الصغيرة، ومجموعات الادخار المجتمعية (Saving Groups)، وغيرها من المبادرات المناسبة للسياق المحلي',
+          'التدريب والتمكين الاقتصادي من خلال نماذج متنوعة تتناسب مع احتياجات الفئات المستهدفة، مثل دعم المشروعات الصغيرة، ومجموعات الادخار المجتمعية، وغيرها من المبادرات المناسبة للسياق المحلي',
           'المتابعة والإرشاد',
           'دعم تعليم الأبناء (وفقًا لأولويات البرنامج وموارده)',
         ],
