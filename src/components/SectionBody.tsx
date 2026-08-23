@@ -3,8 +3,6 @@ import { QuoteTile } from './QuoteTile'
 import { GoalsGrid } from './GoalsGrid'
 import { ServicesTile } from './ServicesTile'
 import { AudienceTile } from './AudienceTile'
-import { ContactTile } from './ContactTile'
-import { ArchiveGallery } from './ArchiveGallery'
 import { Tile } from './Tile'
 import type { MinistrySection } from '../data/ministries'
 
@@ -16,8 +14,9 @@ interface SectionBodyProps {
 }
 
 /** Renders every band a ministry section can have, in reading order:
- *  intro → vision → verse → goals → services → target groups → closing →
- *  contact → archive. Bands with no data are skipped. */
+ *  intro → vision → verse → goals → services → target groups → closing.
+ *  Bands with no data are skipped. Contact details are the footer's job on
+ *  every page, so a service page ends on its own closing paragraph. */
 export function SectionBody({ section, showStats = false }: SectionBodyProps) {
   return (
     <>
@@ -105,16 +104,6 @@ export function SectionBody({ section, showStats = false }: SectionBodyProps) {
           </Tile>
         </SectionBand>
       )}
-
-      <SectionBand id="contact">
-        <ContactTile />
-      </SectionBand>
-
-      {section.archiveSlots || section.archive?.length ? (
-        <SectionBand title="من أرشيف الخدمة والفعاليات" className="pb-14">
-          <ArchiveGallery count={section.archiveSlots ?? 0} photos={section.archive} />
-        </SectionBand>
-      ) : null}
     </>
   )
 }

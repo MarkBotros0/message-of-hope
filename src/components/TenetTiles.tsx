@@ -66,7 +66,7 @@ export function TenetTiles({
                 )}
               </div>
             </div>
-            <p className="mt-4 text-[15px] leading-loose">{item.body}</p>
+            <p className="mt-4 text-base leading-loose">{item.body}</p>
           </Tile>
         </li>
       ))}

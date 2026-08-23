@@ -11,7 +11,7 @@ const pages = [
   { path: '/about', label: 'من نحن' },
 ]
 
-const navLink = 'rounded-full px-4 py-2 text-sm transition'
+const navLink = 'rounded-full px-4 py-2 text-base transition'
 
 /** Floating pill header: brand mark on one side, the top-level pages plus the
  *  الخدمات dropdown on the other. On phones everything collapses into a panel
@@ -50,7 +50,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-3 z-50 px-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-3 py-2 shadow-header backdrop-blur-lg">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-4 py-2.5 shadow-header backdrop-blur-lg">
         <Link
           to="/"
           // The logo carries the name in its own artwork, so no wordmark beside
@@ -63,12 +63,13 @@ export function SiteHeader() {
               src="/logo-mark.png"
               alt=""
               // The mark carries its own rounded plate, so no clipping here.
-              className="h-11 w-11 object-contain"
+              // It sets the height of the whole pill.
+              className="h-14 w-14 object-contain"
               onError={() => setLogoOk(false)}
             />
           ) : (
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand">
-              <Sun className="text-sun" size={20} strokeWidth={2.2} />
+            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand">
+              <Sun className="text-sun" size={26} strokeWidth={2.2} />
             </span>
           )}
         </Link>

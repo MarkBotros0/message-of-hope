@@ -35,9 +35,10 @@
 
 @layer base {
   :root {
-    /* Height of the floating header pill; the الرحمة page stacks a tab bar
-       under it. Anchor offsets are derived from both. */
-    --header-h: 4.5rem;
+    /* Where the floating header pill ends: its own height plus the `top-3` it
+       floats on. The الرحمة page sticks its tab bar at exactly this line, and
+       anchor offsets are derived from it. */
+    --header-h: 5.625rem;
     --tabbar-h: 0rem;
 
     /* Shadows are cast in a deep brand green, never neutral grey — a grey

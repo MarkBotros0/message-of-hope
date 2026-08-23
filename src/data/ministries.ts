@@ -57,8 +57,8 @@ export interface MinistrySection {
   audience?: { label: string; items: AudienceItem[] }
   /** Closing paragraph that follows the lists. */
   outro?: string
-  /** Placeholder tile count, used only while `archive` is still empty. */
-  archiveSlots?: number
+  /** Photos the client has supplied for this section. They feed the home
+   *  carousel; the service pages no longer carry a gallery of their own. */
   archive?: ArchivePhoto[]
 }
 
@@ -70,10 +70,8 @@ export interface Ministry {
   /** One-line summary for the nav menu and the service tiles. Condensed from
    *  this ministry's own source text — no new claims are introduced. */
   navBlurb?: string
-  /** Photo leading this service's card on the home page. خدمة الرحمة still has
-   *  none of its own and borrows one rather than sit behind a placeholder —
-   *  replace it the moment the client supplies one. The card treats the image
-   *  as decorative, so no alt text claims it shows that service. */
+  /** Photo leading this service's card on the home page, and its thumbnail in
+   *  the الخدمات menu. Each service now has one of its own. */
   cardPhoto?: ArchivePhoto
   sections: MinistrySection[]
 }
@@ -158,7 +156,6 @@ const children: Ministry = {
           { value: 'أسرة الطفل', share: '٥٪', priority: 'هدف فرعي' },
         ],
       },
-      archiveSlots: 6,
       archive: [
         {
           src: '/archive/egyptian-children-class-activities.jpg',
@@ -229,7 +226,6 @@ const women: Ministry = {
           },
         ],
       },
-      archiveSlots: 6,
       archive: [
         {
           src: '/archive/women-praise-meeting.jpg',
@@ -251,10 +247,9 @@ const mercy: Ministry = {
   title: 'خدمة الرحمة',
   navBlurb:
     'دعم إنساني عملي للأسر الأكثر احتياجًا، وللاجئين السودانيين في مصر.',
-  // Borrowed — see the note on `cardPhoto`.
   cardPhoto: {
-    src: '/archive/egyptian-children-praying-in-class.jpg',
-    alt: 'أطفال يقفون للصلاة مع مشرفتهم في بداية اليوم الدراسي.',
+    src: '/archive/mercy-house-before-roof-courtyard.jpg',
+    alt: 'منزل ريفي قبل الترميم، سقفه من جريد النخل وأخشاب متهالكة يتسرّب منها الضوء.',
   },
   sections: [
     {
@@ -282,7 +277,23 @@ const mercy: Ministry = {
       },
       outro:
         'ومن خلال هذه المبادرات، تسعى الخدمة إلى مساندة الأسر في احتياجاتها اليومية، والمساهمة في تحسين ظروفها المعيشية، والتعبير عمليًا عن محبة المسيح.',
-      archiveSlots: 6,
+      // The services list above, photographed: the housing the ministry finds
+      // families in, and one of the small income-generating projects it helps
+      // them set up.
+      archive: [
+        {
+          src: '/archive/mercy-house-before-roof-courtyard.jpg',
+          alt: 'حجرة في منزل ريفي قبل الترميم، يغطيها سقف من جريد النخل وأخشاب متهالكة يتسرّب منها ضوء الشمس.',
+        },
+        {
+          src: '/archive/mercy-village-home-interior.jpg',
+          alt: 'داخل منزل ريفي من الطوب اللبن، تتناثر على جدرانه صور وأيقونات، ويضيئه ضوء نافذة واحدة.',
+        },
+        {
+          src: '/archive/mercy-sewing-microproject.jpg',
+          alt: 'سيدة تعمل على ماكينة خياطة صناعية داخل منزلها، ضمن مشروع صغير مدرّ للدخل.',
+        },
+      ],
     },
     {
       slug: 'sudanese',
@@ -299,7 +310,6 @@ const mercy: Ministry = {
           'تنظيم قوافل طبية مجانية بالتعاون مع أطباء سودانيين، تشمل الفحوصات الطبية، وتوفير الأدوية، وخدمات فحص النظر',
         ],
       },
-      archiveSlots: 6,
     },
   ],
 }
@@ -354,8 +364,8 @@ export const site = {
     'نعمل مع الأسر والمجتمعات الأكثر احتياجًا في مصر: أطفال القرى الفقيرة، والسيدات اللاتي يتحملن مسؤولية إعالة أسرهن، والأسر واللاجئون الذين يحتاجون إلى دعم إنساني عملي.',
 } as const
 
-/** Photos already supplied by the client, surfaced on the home page so the
- *  archive is not buried inside a single service page. */
+/** Every photo the client has supplied, in ministry order. The home carousel
+ *  is the only place they are all shown together. */
 export const highlightPhotos: ArchivePhoto[] = ministries.flatMap((m) =>
   m.sections.flatMap((s) => s.archive ?? []),
 )

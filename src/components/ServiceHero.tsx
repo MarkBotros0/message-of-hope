@@ -1,13 +1,6 @@
-import { Button } from './Button'
 import { Reveal } from './Reveal'
 import { Tile } from './Tile'
-import type { Stat } from '../data/ministries'
-
-interface HeroAction {
-  label: string
-  href: string
-  variant?: 'solid' | 'outline'
-}
+import type { ArchivePhoto, Stat } from '../data/ministries'
 
 interface ServiceHeroProps {
   eyebrow?: string
@@ -15,59 +8,65 @@ interface ServiceHeroProps {
   /** Supporting paragraph under the headline. The service pages carry their
    *  intro in a band of its own, so only the site-level pages set this. */
   description?: string
+  /** Fills the hero's second half. Omit to fall back to the placeholder. */
+  photo?: ArchivePhoto
   stats?: Stat[]
-  actions?: HeroAction[]
 }
 
-/** The hero bento: a full-width brand tile, the ministry's headline figures
- *  beside it, and a wide photo tile closing the block. */
+/** The hero bento: one brand tile split in half — the ministry's name on one
+ *  side, its own photograph on the other — with the headline figures on tiles
+ *  below. The halves stack on phones, where a half-width photo would be a
+ *  sliver. */
 export function ServiceHero({
   eyebrow,
   title,
   description,
+  photo,
   stats = [],
-  actions = [],
 }: ServiceHeroProps) {
   return (
     <Reveal className="py-6 sm:py-10">
       <div className="grid gap-4 sm:grid-cols-4">
-        <Tile
-          tone="brand"
-          className="relative overflow-hidden p-8 sm:col-span-4 sm:p-12 lg:p-14"
-        >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -top-16 -left-10 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.35),transparent_70%)]"
-          />
-          {eyebrow && (
-            <span className="relative mb-5 inline-block rounded-full bg-white/20 px-4 py-1.5 text-sm font-bold">
-              {eyebrow}
-            </span>
-          )}
-          <h1 className="relative text-4xl font-extrabold text-balance text-white sm:text-6xl lg:text-7xl">
-            {title}
-          </h1>
+        <Tile tone="brand" className="overflow-hidden sm:col-span-4">
+          <div className="flex flex-col md:flex-row md:items-stretch">
+            {/* Text half. Centred down the tile's height so the name sits
+                level with the middle of the photo beside it. */}
+            <div className="relative flex flex-col justify-center p-8 sm:p-10 md:w-1/2 md:min-w-0 lg:p-12">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-16 -left-10 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.35),transparent_70%)]"
+              />
+              {eyebrow && (
+                <span className="relative mb-5 inline-block self-start rounded-full bg-white/20 px-4 py-1.5 text-sm font-bold">
+                  {eyebrow}
+                </span>
+              )}
+              <h1 className="relative text-2xl font-extrabold text-balance text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.25]">
+                {title}
+              </h1>
+              {/* The same leaf rule the section headings carry. */}
+              <span className="relative mt-4 block h-1.5 w-14 rounded-full bg-leaf" />
 
-          {description && (
-            <p className="relative mt-6 max-w-[62ch] text-lg leading-loose text-white/90">
-              {description}
-            </p>
-          )}
-
-          {actions.length > 0 && (
-            <div className="relative mt-8 flex flex-wrap gap-3">
-              {actions.map((action) => (
-                <Button
-                  key={action.label}
-                  href={action.href}
-                  variant={action.variant ?? 'solid'}
-                  onBrand
-                >
-                  {action.label}
-                </Button>
-              ))}
+              {description && (
+                <p className="relative mt-5 max-w-[62ch] leading-loose text-white/90">
+                  {description}
+                </p>
+              )}
             </div>
-          )}
+
+            {/* Photo half. A real photo carries its own alt text; the
+                placeholder is decorative and stays hidden from assistive
+                tech. */}
+            <div className="bg-brand-dark md:w-1/2">
+              <img
+                src={photo?.src ?? '/placeholder-photo.svg'}
+                alt={photo?.alt ?? ''}
+                aria-hidden={photo ? undefined : true}
+                fetchPriority="high"
+                className="h-52 w-full object-cover sm:h-64 md:h-full md:min-h-[20rem]"
+              />
+            </div>
+          </div>
         </Tile>
 
         {stats.map((stat, i) => (
