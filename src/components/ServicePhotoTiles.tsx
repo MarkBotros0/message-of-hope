@@ -36,7 +36,7 @@ export function ServicePhotoTiles() {
               <div className="absolute inset-x-0 bottom-0 p-5">
                 {/* The rule stretches on hover — the tile's one moving part. */}
                 <span className="mb-3 block h-1 w-10 rounded-full bg-leaf transition-all duration-300 group-hover:w-16" />
-                {/* The nav labels are shorthand (المرأة…); on a tile standing
+                {/* The nav labels are shorthand (السيدات…); on a tile standing
                     on its own the full "خدمة …" name reads better. */}
                 <h3 className="font-display text-xl font-extrabold text-white">
                   خدمة {service.label}

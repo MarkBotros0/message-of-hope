@@ -5,7 +5,7 @@ import { Pending } from './Pending'
 
 function FooterHeading({ children }: { children: string }) {
   return (
-    <h4 className="mb-3 font-display text-sm font-bold text-leaf">{children}</h4>
+    <h4 className="mb-2 font-display text-sm font-bold text-leaf">{children}</h4>
   )
 }
 
@@ -38,7 +38,7 @@ export function Footer() {
       {/* Three equal columns — logo, services, contact — so the row reads as
           even spans rather than a mark squeezed against the edge. Stacked and
           centred on phones. */}
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 text-center sm:grid-cols-3 sm:gap-8 sm:px-6 sm:text-start">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-8 text-center sm:grid-cols-3 sm:gap-6 sm:px-6 sm:text-start">
         {/* The cell stretches to the row height and centres the mark inside it,
             so the link columns keep starting at their headings. */}
         <div className="flex items-center justify-center sm:justify-start">
@@ -76,7 +76,7 @@ export function Footer() {
 
         <div>
           <FooterHeading>تواصل معنا</FooterHeading>
-          <ul className={`flex flex-col items-center gap-3 sm:items-start ${listClass}`}>
+          <ul className={`flex flex-col items-center gap-2 sm:items-start ${listClass}`}>
             {pendingContact.map(({ key, Icon, label }) => (
               <li key={key} className="flex flex-wrap items-center gap-2">
                 <Icon size={16} className="shrink-0 text-leaf" aria-hidden="true" />
@@ -89,7 +89,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-5 text-center text-sm leading-5 text-on-ink sm:px-6 sm:text-start">
+        <div className="mx-auto max-w-6xl px-4 py-4 text-center text-sm leading-5 text-on-ink sm:px-6 sm:text-start">
           © {year} رسالة أمل — جميع الحقوق محفوظة.
         </div>
       </div>

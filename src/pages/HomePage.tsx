@@ -18,7 +18,7 @@ export function HomePage() {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <SectionBand id="services" title="خدماتنا">
+        <SectionBand id="services" title="خدماتنا" banner>
           <ServicePhotoTiles />
         </SectionBand>
       </div>

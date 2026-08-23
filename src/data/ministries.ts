@@ -4,7 +4,7 @@
 // present in that document is used here; anything the document does not provide
 // (contact details, photos) is left as PENDING and shown as a placeholder.
 //
-// The document names «أمل جديد» in two places (the خدمة المرأة opening paragraph
+// The document names «أمل جديد» in two places (the خدمة السيدات opening paragraph
 // and the Sudanese-refugees paragraph). That wording is kept verbatim.
 // ---------------------------------------------------------------------------
 
@@ -70,11 +70,10 @@ export interface Ministry {
   /** One-line summary for the nav menu and the service tiles. Condensed from
    *  this ministry's own source text — no new claims are introduced. */
   navBlurb?: string
-  /** Photo leading this service's card on the home page. The client has only
-   *  supplied the three خدمة الطفل المصري photos so far, so خدمة المرأة and
-   *  خدمة الرحمة borrow one each rather than sit behind a placeholder —
-   *  replace these the moment their own photos arrive. The card treats the
-   *  image as decorative, so no alt text claims it shows that service. */
+  /** Photo leading this service's card on the home page. خدمة الرحمة still has
+   *  none of its own and borrows one rather than sit behind a placeholder —
+   *  replace it the moment the client supplies one. The card treats the image
+   *  as decorative, so no alt text claims it shows that service. */
   cardPhoto?: ArchivePhoto
   sections: MinistrySection[]
 }
@@ -181,26 +180,27 @@ const children: Ministry = {
 }
 
 // ---------------------------------------------------------------------------
-// Tab 2 — خدمة المرأة
+// Tab 2 — خدمة السيدات. The client's document calls this one خدمة المرأة; the
+// service was renamed after it was written, so the name is updated wherever it
+// appears while the rest of the paragraph stays verbatim. The URL stays
+// /women, since the links to it are already out.
 // ---------------------------------------------------------------------------
 const women: Ministry = {
   slug: 'women',
-  navLabel: 'المرأة',
+  navLabel: 'السيدات',
   eyebrow: 'من خدماتنا',
-  title: 'خدمة المرأة',
+  title: 'خدمة السيدات',
   navBlurb:
     'تلمذة ومجموعات دعم وتمكين اقتصادي للسيدات المعيلات واللاجئات.',
-  // Borrowed — the client has no خدمة المرأة photo yet. This one at least
-  // leads with an adult woman rather than a classroom of children.
   cardPhoto: {
-    src: '/archive/egyptian-children-teacher-with-child.jpg',
-    alt: 'مدرّسة تشرح مسألة رياضيات لطفل أمام السبورة.',
+    src: '/archive/women-praise-meeting.jpg',
+    alt: 'سيدات في اجتماع تسبيح داخل قاعة الخدمة، وفريق التسبيح يقود من الأمام.',
   },
   sections: [
     {
       heading: 'نبذة عن البرنامج',
       intro: [
-        'انطلقت خدمة المرأة في خدمة أمل جديد استجابةً لاحتياجات النساء اللاتي يتحملن مسؤولية إعالة أسرهن في ظروف حياتية صعبة، سواء من السيدات المعيلات في المجتمعات المحلية أو السيدات اللاجئات اللاتي يواجهن تحديات اقتصادية واجتماعية وروحية نتيجة ظروف النزوح واللجوء.',
+        'انطلقت خدمة السيدات في خدمة أمل جديد استجابةً لاحتياجات النساء اللاتي يتحملن مسؤولية إعالة أسرهن في ظروف حياتية صعبة، سواء من السيدات المعيلات في المجتمعات المحلية أو السيدات اللاجئات اللاتي يواجهن تحديات اقتصادية واجتماعية وروحية نتيجة ظروف النزوح واللجوء.',
       ],
       stats: [{ value: 'من ١٨ إلى ٤٥ عامًا', label: 'الفئة العمرية' }],
       visionLabel: 'هدف البرنامج',
@@ -230,6 +230,12 @@ const women: Ministry = {
         ],
       },
       archiveSlots: 6,
+      archive: [
+        {
+          src: '/archive/women-praise-meeting.jpg',
+          alt: 'سيدات في اجتماع تسبيح داخل قاعة الخدمة، وفريق التسبيح يقود من الأمام.',
+        },
+      ],
     },
   ],
 }
@@ -344,7 +350,7 @@ export const serviceNav: NavNode[] = ministries.map((m) => ({
  *  anything beyond that stays a PENDING placeholder. */
 export const site = {
   name: 'رسالة أمل',
-  tagline: 'خدمة الطفل المصري · خدمة المرأة · خدمة الرحمة',
+  tagline: 'خدمة الطفل المصري · خدمة السيدات · خدمة الرحمة',
   intro:
     'نعمل مع الأسر والمجتمعات الأكثر احتياجًا في مصر: أطفال القرى الفقيرة، والسيدات اللاتي يتحملن مسؤولية إعالة أسرهن، والأسر واللاجئون الذين يحتاجون إلى دعم إنساني عملي.',
 } as const

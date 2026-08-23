@@ -35,13 +35,17 @@ export function ArchiveGallery({ count, photos }: ArchiveGalleryProps) {
   const grid = 'grid auto-rows-[110px] grid-cols-4 gap-3 sm:auto-rows-[120px] sm:gap-4'
 
   if (photos?.length) {
+    // A lone photo takes the banner slot: the half-width tile the cycle would
+    // otherwise start on leaves an empty half-row beside it.
+    const layout = photos.length === 1 ? ['col-span-4 row-span-2'] : photoSlots
+
     return (
       <div className={grid}>
         {photos.map((photo, i) => (
           <Tile
             key={photo.src}
             static
-            className={`overflow-hidden ${photoSlots[i % photoSlots.length]}`}
+            className={`overflow-hidden ${layout[i % layout.length]}`}
           >
             <img
               src={photo.src}
