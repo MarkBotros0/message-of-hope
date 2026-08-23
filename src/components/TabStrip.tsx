@@ -65,7 +65,10 @@ export function TabStrip({ labels, active, onChange, idPrefix }: TabStripProps) 
             aria-controls={panelId(idPrefix, i)}
             tabIndex={selected ? 0 : -1}
             onClick={() => onChange(i)}
-            className={`shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
+            // The strip behind these is transparent, so each pill carries the
+            // site's resting shadow and reads as its own surface over whatever
+            // scrolls beneath it.
+            className={`shrink-0 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-bold shadow-card transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ${
               selected
                 ? 'bg-brand text-white'
                 : 'border border-line bg-white text-body hover:border-brand hover:text-brand'

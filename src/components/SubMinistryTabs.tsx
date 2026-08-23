@@ -26,7 +26,11 @@ export function SubMinistryTabs({ ministry, sub }: SubMinistryTabsProps) {
   return (
     // The tab bar joins the header in the sticky stack; anchors offset by both.
     <div style={{ '--tabbar-h': '4.25rem' } as CSSProperties}>
-      <div className="sticky top-[var(--header-h)] z-10 -mx-4 mb-2 bg-page/90 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6">
+      {/* No background of its own. A page-coloured strip here is opaque
+          whether or not it is stuck, and at rest it cuts across the shadow
+          the hero above it casts. The pills carry their own surfaces, so
+          they stay legible over whatever scrolls under them. */}
+      <div className="sticky top-[var(--header-h)] z-10 -mx-4 mb-2 px-4 py-3 sm:-mx-6 sm:px-6">
         <TabStrip
           labels={sections.map((s) => s.tabLabel ?? s.heading ?? '')}
           active={active}

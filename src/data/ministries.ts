@@ -55,6 +55,8 @@ export interface MinistrySection {
   /** Overrides the default "رؤيتنا" heading on the vision card — خدمة
    *  السيدات states a programme goal there rather than a vision. */
   visionLabel?: string
+  /** A scripture verse the document attaches to the section. Kept, but
+   *  nothing renders it — the service pages no longer carry a verse. */
   quote?: { text: string; source: string }
   goals?: { label: string; items: NamedItem[] }
   services?: { label: string; items: string[] }
@@ -204,7 +206,7 @@ const women: Ministry = {
       vision:
         'يهدف البرنامج إلى إظهار محبة المسيح بصورة عملية، ومرافقة السيدات في رحلة متكاملة من التلمذة والتمكين، من خلال تنمية حياتهن الروحية، وبناء مجتمعات داعمة قائمة على المساندة المتبادلة، وتعزيز قدراتهن الاقتصادية، بما يمكنهن من مواجهة تحديات الحياة وإعالة أسرهن بكرامة ورجاء، وبناء مستقبل أفضل لهن ولأبنائهن.',
       services: {
-        label: 'ويحقق البرنامج ذلك من خلال مجموعة من التدخلات الرئيسية، تشمل',
+        label: 'الخدمات المقدمة',
         items: [
           'التلمذة والنمو الروحي',
           'مجموعات الدعم والمساندة المتبادلة',
@@ -214,7 +216,7 @@ const women: Ministry = {
         ],
       },
       audience: {
-        label: 'يستهدف البرنامج',
+        label: 'الفئات المستهدفة',
         items: [
           {
             value:
@@ -266,7 +268,7 @@ const mercy: Ministry = {
         source: 'متى ٢٥: ٣٥–٤٠',
       },
       services: {
-        label: 'تقدم الخدمة دعمًا عمليًا للأسر من خلال',
+        label: 'الخدمات المقدمة',
         items: [
           'توزيع الطرود الغذائية',
           'تحسين ظروف السكن، مثل بناء الأسقف وإنشاء دورات المياه',
@@ -303,7 +305,7 @@ const mercy: Ministry = {
         'مع وصول أعداد كبيرة من اللاجئين السودانيين إلى مصر، بدأت رسالة أمل في تقديم دعم إنساني للأسر الأكثر احتياجًا، استجابةً للظروف الصعبة التي يواجهها العديد من اللاجئين.',
       ],
       services: {
-        label: 'وتشمل هذه الجهود',
+        label: 'الخدمات المقدمة',
         items: [
           'توزيع طرود غذائية شهرية لمئات الأسر',
           'تنظيم قوافل طبية مجانية بالتعاون مع أطباء سودانيين، تشمل الفحوصات الطبية، وتوفير الأدوية، وخدمات فحص النظر',

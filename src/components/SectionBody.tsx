@@ -1,5 +1,5 @@
 import { SectionBand } from './SectionBand'
-import { QuoteTile } from './QuoteTile'
+import { ProseCard } from './ProseCard'
 import { GoalsGrid } from './GoalsGrid'
 import { ServicesTile } from './ServicesTile'
 import { AudienceTile } from './AudienceTile'
@@ -11,7 +11,7 @@ interface SectionBodyProps {
 }
 
 /** Renders every band a ministry section can have, in reading order:
- *  intro → vision → verse → goals → services → target groups → closing.
+ *  intro → vision → goals → services → target groups → closing.
  *  Bands with no data are skipped. Contact details are the footer's job on
  *  every page, so a service page ends on its own closing paragraph. */
 export function SectionBody({ section }: SectionBodyProps) {
@@ -19,30 +19,18 @@ export function SectionBody({ section }: SectionBodyProps) {
     <>
       {section.intro?.length ? (
         <SectionBand>
-          <QuoteTile
+          <ProseCard
             label={section.heading}
             text={section.intro}
-            variant="card"
           />
         </SectionBand>
       ) : null}
 
       {section.vision && (
         <SectionBand id="vision">
-          <QuoteTile
+          <ProseCard
             label={section.visionLabel ?? 'رؤيتنا'}
             text={section.vision}
-            variant="card"
-          />
-        </SectionBand>
-      )}
-
-      {section.quote && (
-        <SectionBand>
-          <QuoteTile
-            label="من الكتاب المقدس"
-            text={section.quote.text}
-            source={section.quote.source}
           />
         </SectionBand>
       )}

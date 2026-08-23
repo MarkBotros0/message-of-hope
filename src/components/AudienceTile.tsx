@@ -5,7 +5,7 @@ import type { AudienceItem } from '../data/ministries'
 const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩'
 
 /** The document writes its shares as "٤٠٪". Read the number back out so the
- *  ring can be drawn from it; the string itself is what gets displayed. */
+ *  pie can be drawn from it; the string itself is what gets displayed. */
 function parseShare(share: string | undefined): number | null {
   if (!share) return null
   const ascii = [...share]
@@ -18,47 +18,48 @@ function parseShare(share: string | undefined): number | null {
   return Number.isFinite(n) ? n : null
 }
 
-/** Four distinct fields from the palette. The ring is the one place on the site
- *  where colour carries meaning, so the segments run dark green → mid → leaf →
- *  sun rather than four shades of one hue. */
-const SEGMENT_COLOURS = [
+/** Four fields from the palette, ordered so that no two neighbouring slices
+ *  are near-relatives. brand and brand-mid were the obvious pair to reach for
+ *  and the wrong one — both are the same teal green a shade apart, and at a
+ *  glance the two largest slices read as one. The greens are split by the sun
+ *  instead, and the two that remain differ in hue (teal vs olive) as well as
+ *  in weight. */
+const SLICE_COLOURS = [
   'var(--color-brand)',
-  'var(--color-brand-mid)',
-  'var(--color-leaf)',
+  'var(--color-leaf-dark)',
   'var(--color-sun)',
+  'var(--color-leaf)',
 ]
 
-/** Numerals sit on brand, brand-mid and sun as white, but leaf is a light green
- *  that needs the dark ink instead. Index-matched to the colours above. */
-const NUMERAL_COLOURS = ['#fff', '#fff', 'var(--color-ink)', '#fff']
-
-/** Where each group sits once there are four of them and the room to place
- *  them: the four corners around the ring, read from the start edge. The
- *  middle column belongs to the ring. */
-const CORNERS = [
-  'md:col-start-1 md:row-start-1',
-  'md:col-start-3 md:row-start-1',
-  'md:col-start-1 md:row-start-2',
-  'md:col-start-3 md:row-start-2',
+/** The two dark fields carry white; the two light ones carry ink. Index-matched
+ *  to the colours above, and each pairing clears 3:1 — the figures are set at
+ *  15 units, which is over 18.66px bold at every size the pie is drawn. */
+const LABEL_COLOURS = [
+  '#fff',
+  '#fff',
+  'var(--color-ink)',
+  'var(--color-ink)',
 ]
 
-// Ring geometry, in the SVG's own 180×180 units.
+// Pie geometry, in the SVG's own 180×180 units.
 const CENTRE = 90
-const RADIUS = 56
-const STROKE = 18
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS
-/** The marker orbit: clear of the ring's outer edge, inside the viewBox. */
-const MARKER_ORBIT = 78
-const MARKER_R = 11
+const RADIUS = 62
+/** Where a share is written when it fits inside its own slice. */
+const INSIDE_ORBIT = RADIUS * 0.64
+/** …and where it goes when it does not. */
+const OUTSIDE_ORBIT = RADIUS + 14
+/** Below this, a slice is too narrow to hold its own figure. */
+const INSIDE_MIN_SHARE = 8
+
+function point(angle: number, radius: number): [number, number] {
+  return [CENTRE + radius * Math.cos(angle), CENTRE + radius * Math.sin(angle)]
+}
 
 /** Target groups. Where every group carries a share and they add up to a whole,
- *  they are drawn as one ring split between them.
+ *  they are drawn as one pie, with the groups listed beside it.
  *
- *  Each slice is marked with its number rather than trailed by a leader line:
- *  with four slices spread round the ring and the labels stacked down one side,
- *  three of every four leaders have to cross the ring to reach their label. A
- *  numeral on the slice and the same numeral on the row say the same thing and
- *  cross nothing — and unlike colour, they still say it in greyscale.
+ *  Every slice is labelled with its own share, so the figures are read off the
+ *  pie rather than repeated beside each group's name.
  *
  *  The رئيسي/فرعي priority the document also records is carried in the data but
  *  not drawn — the share already says which groups the work centres on. */
@@ -67,7 +68,7 @@ export function AudienceTile({ items }: { items: AudienceItem[] }) {
   const total = shares.reduce<number>((sum, n) => sum + (n ?? 0), 0)
   const chartable =
     items.length > 1 &&
-    items.length <= SEGMENT_COLOURS.length &&
+    items.length <= SLICE_COLOURS.length &&
     shares.every((n) => n !== null && n > 0) &&
     Math.abs(total - 100) < 1
 
@@ -98,122 +99,101 @@ export function AudienceTile({ items }: { items: AudienceItem[] }) {
     )
   }
 
-  // Each slice starts where the last one ended; the ring opens at twelve
+  // Each slice starts where the last one ended; the pie opens at twelve
   // o'clock, so every angle is measured from there.
   let offset = 0
-  const segments = (shares as number[]).map((share, i) => {
-    const length = (share / 100) * CIRCUMFERENCE
-    const mid =
-      ((offset + length / 2) / CIRCUMFERENCE) * 2 * Math.PI - Math.PI / 2
-    const segment = {
-      length,
-      offset,
-      colour: SEGMENT_COLOURS[i],
-      numeralColour: NUMERAL_COLOURS[i],
-      cos: Math.cos(mid),
-      sin: Math.sin(mid),
+  const slices = (shares as number[]).map((share, i) => {
+    const from = (offset / 100) * 2 * Math.PI - Math.PI / 2
+    offset += share
+    const to = (offset / 100) * 2 * Math.PI - Math.PI / 2
+    const mid = (from + to) / 2
+    const inside = share >= INSIDE_MIN_SHARE
+    const [sx, sy] = point(from, RADIUS)
+    const [ex, ey] = point(to, RADIUS)
+    const [lx, ly] = point(mid, inside ? INSIDE_ORBIT : OUTSIDE_ORBIT)
+    return {
+      d: `M ${CENTRE} ${CENTRE} L ${sx} ${sy} A ${RADIUS} ${RADIUS} 0 ${
+        share > 50 ? 1 : 0
+      } 1 ${ex} ${ey} Z`,
+      colour: SLICE_COLOURS[i],
+      inside,
+      // A figure sitting outside its slice needs a tick back to it.
+      tick: inside ? null : [...point(mid, RADIUS), ...point(mid, OUTSIDE_ORBIT - 7)],
+      labelColour: inside ? LABEL_COLOURS[i] : 'var(--color-ink)',
+      lx,
+      ly,
     }
-    offset += length
-    return segment
   })
 
   return (
-    <Tile tone="tint" className="p-7 sm:p-9">
-      {/* Four groups at the four corners with the ring in the middle of them.
-          The grid keeps the middle column empty and the ring is centred over
-          it, so the two never fight for the same space. Below `md` there is no
-          room for corners: the ring goes on top and the groups stack. */}
-      <div className="relative flex flex-col items-center gap-8 md:block md:min-h-[21rem]">
-        <ol className="grid w-full gap-x-10 gap-y-8 sm:grid-cols-2 md:grid-cols-[1fr_19rem_1fr] md:items-center md:gap-y-12">
+    // Capped like the prose cards above it: at full width the pie and the list
+    // sit at opposite edges with a hole between them.
+    <Tile tone="tint" className="mx-auto max-w-4xl p-7 sm:p-8">
+      {/* Groups on the start side, pie on the end side. Below `md` there is no
+          room for two columns: the pie goes on top and the groups stack. */}
+      <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10">
+        <ol className="w-full flex-1 space-y-5">
           {items.map((item, i) => (
-            <li
-              key={item.value}
-              className={`flex gap-4 ${CORNERS[i] ?? ''}`}
-            >
-              {/* The same marker the slice wears. */}
+            <li key={item.value} className="flex gap-4">
               <span
                 aria-hidden="true"
-                className="mt-1 grid h-8 w-8 shrink-0 place-items-center rounded-full font-display text-sm font-extrabold"
-                style={{
-                  backgroundColor: segments[i].colour,
-                  color: segments[i].numeralColour,
-                }}
-              >
-                {toArabicNumeral(i + 1)}
-              </span>
-              <div className="min-w-0">
-                {/* Ink, not the slice colour — leaf and sun both fall under
-                    4.5:1 on the tint surface. The marker carries the colour. */}
-                <span className="font-display text-xl font-extrabold text-ink">
-                  {item.share}
-                </span>
-                <p className="leading-loose text-body">{item.value}</p>
-              </div>
+                className="mt-3.5 h-3.5 w-3.5 shrink-0 rounded-full"
+                style={{ backgroundColor: slices[i].colour }}
+              />
+              <p className="min-w-0 leading-loose text-body">
+                {/* The share is drawn on the slice, so the row does not repeat
+                    it — but the pie is hidden from assistive tech, so the
+                    figure has to reach a screen reader from here. */}
+                <span className="sr-only">{item.share} — </span>
+                {item.value}
+              </p>
             </li>
           ))}
         </ol>
 
-        {/* Decorative: the list carries every number the ring shows, so there
+        {/* Decorative: the list carries every figure the pie shows, so there
             is nothing here for a screen reader to miss. */}
         <svg
           viewBox="0 0 180 180"
           aria-hidden="true"
-          className="order-first h-56 w-56 shrink-0 sm:h-64 sm:w-64 md:absolute md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:h-72 md:w-72"
+          className="order-first h-56 w-56 shrink-0 sm:h-64 sm:w-64 md:order-last"
         >
-          {/* White track, so a ring that did not quite total 100 would show it
-              rather than closing over the gap. */}
-          <circle
-            cx={CENTRE}
-            cy={CENTRE}
-            r={RADIUS}
-            fill="none"
-            stroke="#fff"
-            strokeWidth={STROKE + 1}
-          />
-          {segments.map((segment, i) => (
-            <circle
+          {slices.map((slice, i) => (
+            <path
               key={items[i].value}
-              cx={CENTRE}
-              cy={CENTRE}
-              r={RADIUS}
-              fill="none"
-              stroke={segment.colour}
-              strokeWidth={STROKE}
-              strokeDasharray={`${segment.length} ${CIRCUMFERENCE - segment.length}`}
-              strokeDashoffset={-segment.offset}
-              transform={`rotate(-90 ${CENTRE} ${CENTRE})`}
+              d={slice.d}
+              fill={slice.colour}
+              // A hairline in the card's own colour, so neighbouring greens
+              // read as two slices rather than one shape.
+              stroke="var(--color-sage-tint)"
+              strokeWidth="1.5"
             />
           ))}
 
-          {segments.map((segment, i) => {
-            const x = CENTRE + MARKER_ORBIT * segment.cos
-            const y = CENTRE + MARKER_ORBIT * segment.sin
-            return (
-              <g key={`marker-${items[i].value}`}>
-                {/* A stub joining the marker to its own slice, so a marker
-                    sitting between two thin slices is never ambiguous. */}
+          {slices.map((slice, i) => (
+            <g key={`label-${items[i].value}`}>
+              {slice.tick && (
                 <line
-                  x1={CENTRE + (RADIUS + STROKE / 2) * segment.cos}
-                  y1={CENTRE + (RADIUS + STROKE / 2) * segment.sin}
-                  x2={CENTRE + (MARKER_ORBIT - MARKER_R) * segment.cos}
-                  y2={CENTRE + (MARKER_ORBIT - MARKER_R) * segment.sin}
-                  stroke={segment.colour}
-                  strokeWidth="2"
+                  x1={slice.tick[0]}
+                  y1={slice.tick[1]}
+                  x2={slice.tick[2]}
+                  y2={slice.tick[3]}
+                  stroke={slice.colour}
+                  strokeWidth="1.5"
                 />
-                <circle cx={x} cy={y} r={MARKER_R} fill={segment.colour} />
-                <text
-                  x={x}
-                  y={y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill={segment.numeralColour}
-                  className="font-display text-[11px] font-extrabold"
-                >
-                  {toArabicNumeral(i + 1)}
-                </text>
-              </g>
-            )
-          })}
+              )}
+              <text
+                x={slice.lx}
+                y={slice.ly}
+                textAnchor="middle"
+                dominantBaseline="central"
+                fill={slice.labelColour}
+                className="font-display text-[15px] font-extrabold"
+              >
+                {items[i].share}
+              </text>
+            </g>
+          ))}
         </svg>
       </div>
     </Tile>
