@@ -4,50 +4,51 @@ import type { ArchivePhoto } from '../data/ministries'
 
 interface HeroCarouselProps {
   photos: ArchivePhoto[]
-  /** Milliseconds each slide is held before the next one slides in. */
+  /** Milliseconds each slide is held before the next one fades up. */
   interval?: number
 }
 
 interface SlideState {
   index: number
-  /** The slide being pushed out; -1 before the first move. */
+  /** The slide still showing underneath; -1 before the first move. */
   leaving: number
-  /** 1 = forward (the next photo arrives from the end side), -1 = back. */
-  direction: number
 }
 
-/** How long a slide takes to travel the full width. */
-const SLIDE_MS = 700
+/** How long the incoming photo takes to fade up over the one it replaces.
+ *  Kept to half the hold so each photo still gets a beat of stillness. */
+const FADE_MS = 1000
+
+/** How much larger a photo sits before it settles — enough to read as a drift
+ *  towards the viewer, not as a zoom. */
+const REST_SCALE = 1.05
 
 /** Full-width hero slideshow — the bento page's one non-tile surface, so it
- *  carries the same 3xl radius and hairline edge as everything else. Each
- *  change slides the whole frame sideways: the incoming photo travels in from
- *  one edge while the outgoing one leaves by the other, the way a swipe would
- *  carry it. The page is RTL, so forward brings the next photo in from the
- *  right.
+ *  carries the same 3xl radius and hairline edge as everything else. Photos
+ *  cross-dissolve rather than swipe: the incoming one fades up *over* the
+ *  outgoing one while easing down from a slight scale, so there is never a hard
+ *  seam between two images and never a frame where the backdrop shows through.
  *
- *  Only the two slides in motion are transitioned; the rest sit staged off
- *  frame, so wrapping from the last photo back to the first costs the same
+ *  Only the two photos in play are transitioned; the rest sit staged at zero
+ *  opacity, so wrapping from the last photo back to the first costs the same
  *  single step as any other move. The timer runs through hover and through the
  *  dots, stops on a backgrounded tab, and never starts under
  *  `prefers-reduced-motion`. */
 export function HeroCarousel({ photos, interval = 2000 }: HeroCarouselProps) {
-  const [{ index, leaving, direction }, setSlide] = useState<SlideState>({
+  const [{ index, leaving }, setSlide] = useState<SlideState>({
     index: 0,
     leaving: -1,
-    direction: 1,
   })
   const [paused, setPaused] = useState(false)
   const reduceMotion = usePrefersReducedMotion()
   const count = photos.length
 
   const go = useCallback(
-    (next: number, towards: number) => {
+    (next: number) => {
       setSlide((current) => {
         if (count === 0) return current
         const wrapped = ((next % count) + count) % count
         if (wrapped === current.index) return current
-        return { index: wrapped, leaving: current.index, direction: towards }
+        return { index: wrapped, leaving: current.index }
       })
     },
     [count],
@@ -58,7 +59,7 @@ export function HeroCarousel({ photos, interval = 2000 }: HeroCarouselProps) {
   // the click itself.
   useEffect(() => {
     if (reduceMotion || paused || count < 2) return
-    const id = window.setTimeout(() => go(index + 1, 1), interval)
+    const id = window.setTimeout(() => go(index + 1), interval)
     return () => window.clearTimeout(id)
   }, [count, go, index, interval, paused, reduceMotion])
 
@@ -71,15 +72,6 @@ export function HeroCarousel({ photos, interval = 2000 }: HeroCarouselProps) {
 
   if (count === 0) return null
 
-  /** Percent offset for a slide: 0 on show, one width out on either side.
-   *  Physical percentages, not logical ones — a transform ignores `dir`. */
-  const offset = (i: number) => {
-    if (i === index) return 0
-    if (i === leaving) return direction > 0 ? -100 : 100
-    // Everything else waits on the side the next photo will arrive from.
-    return direction > 0 ? 100 : -100
-  }
-
   return (
     <section
       aria-roledescription="carousel"
@@ -89,17 +81,22 @@ export function HeroCarousel({ photos, interval = 2000 }: HeroCarouselProps) {
       className="relative isolate h-[26rem] overflow-hidden border-b border-line bg-brand shadow-card sm:h-[30rem] sm:rounded-3xl sm:border lg:h-[34rem]"
     >
       {photos.map((photo, i) => {
-        const inMotion = i === index || i === leaving
+        const showing = i === index
+        // The outgoing photo holds full opacity underneath while the new one
+        // fades up, so the dissolve never dips towards the backdrop.
+        const beneath = i === leaving
         return (
           <div
             key={photo.src}
-            aria-hidden={i === index ? undefined : true}
+            aria-hidden={showing ? undefined : true}
             style={{
-              transform: `translateX(${offset(i)}%)`,
-              // Staged slides snap into place; only the two in motion travel.
-              transitionDuration: inMotion ? `${SLIDE_MS}ms` : '0ms',
+              opacity: showing || beneath ? 1 : 0,
+              transform: `scale(${showing || beneath ? 1 : REST_SCALE})`,
+              // Staged photos snap into position; only the two in play travel.
+              transitionDuration: showing || beneath ? `${FADE_MS}ms` : '0ms',
+              zIndex: showing ? 2 : beneath ? 1 : 0,
             }}
-            className="absolute inset-0 transition-transform ease-[cubic-bezier(0.4,0,0.2,1)] will-change-transform"
+            className="absolute inset-0 transition-[opacity,transform] ease-[cubic-bezier(0.33,0,0.2,1)] will-change-[opacity,transform]"
           >
             <img
               src={photo.src}
@@ -116,20 +113,20 @@ export function HeroCarousel({ photos, interval = 2000 }: HeroCarouselProps) {
           stay legible over a light photo; the image itself stays clear. */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-ink/50 to-transparent"
+        className="absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-ink/50 to-transparent"
       />
 
       {/* Dots — the slideshow runs itself, so these jump between photos
           without arrows framing them as the way to drive it. */}
       {count > 1 && (
-        <div className="absolute inset-x-0 bottom-4 z-10 flex items-center justify-center gap-2 sm:bottom-6">
+        <div className="absolute inset-x-0 bottom-4 z-20 flex items-center justify-center gap-2 sm:bottom-6">
           {photos.map((photo, i) => (
             <button
               key={photo.src}
               type="button"
               aria-label={`الصورة ${i + 1} من ${count}`}
               aria-current={i === index}
-              onClick={() => go(i, i > index ? 1 : -1)}
+              onClick={() => go(i)}
               className={`h-2.5 rounded-full transition-all duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-ink/40 ${
                 i === index ? 'w-7 bg-leaf' : 'w-2.5 bg-white/60 hover:bg-white'
               }`}
