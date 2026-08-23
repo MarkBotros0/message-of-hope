@@ -10,7 +10,7 @@
   --color-sun: #f7941d; /* logo sun orange */
   --color-ink: #16261d; /* headings and the dark tiles */
   --color-body: #4c574f; /* body text */
-  --color-muted: #6a756c; /* secondary text — AA on page and tint */
+  --color-muted: #657067; /* secondary text — AA on page, tint and white */
   --color-on-ink: #a7bbac; /* body text inside the ink tiles */
   --color-sage-tint: #e8f3ec; /* tinted tile surface */
   --color-line: #e2e9e2; /* hairline tile edges */
@@ -19,6 +19,18 @@
   /* Type — Alexandria for display, Mada for running text. */
   --font-sans: 'Mada', system-ui, 'Segoe UI', sans-serif;
   --font-display: 'Alexandria', system-ui, 'Segoe UI', sans-serif;
+
+  /* Depth. The page and the tiles are both near-white, so a tile is only a
+     tile because of what sits under it — every surface carries a resting
+     shadow, not just a hovered one. They read `--shadow-rgb` rather than a
+     literal, so the whole scale re-tints from one line. */
+  --shadow-card: 0 22px 44px -20px rgb(var(--shadow-rgb) / 0.34),
+    0 5px 12px -8px rgb(var(--shadow-rgb) / 0.24);
+  --shadow-lift: 0 34px 64px -22px rgb(var(--shadow-rgb) / 0.44),
+    0 9px 20px -10px rgb(var(--shadow-rgb) / 0.32);
+  --shadow-header: 0 18px 32px -20px rgb(var(--shadow-rgb) / 0.4);
+  --shadow-menu: 0 30px 58px -26px rgb(var(--shadow-rgb) / 0.46),
+    0 8px 18px -12px rgb(var(--shadow-rgb) / 0.28);
 }
 
 @layer base {
@@ -27,6 +39,11 @@
        under it. Anchor offsets are derived from both. */
     --header-h: 4.5rem;
     --tabbar-h: 0rem;
+
+    /* Shadows are cast in a deep brand green, never neutral grey — a grey
+       shadow on this page reads as dirt. Not a colour utility: the shadow
+       scale above is the only thing that reads it. */
+    --shadow-rgb: 0 84 51;
   }
 
   html {

@@ -79,7 +79,7 @@ export function ServicesMenu({ active }: { active: boolean }) {
           id={panelId}
           // Anchored at the inline-end edge so the panel opens back across the
           // header rather than off the side of the viewport.
-          className="absolute top-full end-0 z-50 mt-3 w-[min(42rem,calc(100vw-3rem))] rounded-3xl border border-line bg-page/95 p-4 shadow-[0_28px_60px_-34px_rgba(0,120,72,0.55)] backdrop-blur-lg"
+          className="absolute top-full end-0 z-50 mt-3 w-[min(42rem,calc(100vw-3rem))] rounded-3xl border border-line bg-page/95 p-4 shadow-menu backdrop-blur-lg"
         >
           <ul className="grid grid-cols-3 gap-3">
             {serviceNav.map((service) => (

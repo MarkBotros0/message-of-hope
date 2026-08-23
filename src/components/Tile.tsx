@@ -20,7 +20,8 @@ const tones: Record<TileTone, string> = {
 }
 
 /** The bento surface every block on the page is built from: a large radius,
- *  a flat colour field and a soft green lift on hover. */
+ *  a flat colour field, a resting green shadow that lifts it off the page, and
+ *  a deeper one on hover. */
 export function Tile({
   tone = 'white',
   id,
@@ -30,10 +31,13 @@ export function Tile({
 }: TileProps) {
   const lift = isStatic
     ? ''
-    : 'transition duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_26px_48px_-32px_rgba(0,120,72,0.4)]'
+    : 'transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lift'
 
   return (
-    <div id={id} className={`rounded-3xl ${tones[tone]} ${lift} ${className}`}>
+    <div
+      id={id}
+      className={`rounded-3xl shadow-card ${tones[tone]} ${lift} ${className}`}
+    >
       {children}
     </div>
   )

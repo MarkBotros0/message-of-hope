@@ -50,7 +50,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-3 z-50 px-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-3 py-2 shadow-[0_12px_30px_-22px_rgba(0,120,72,0.4)] backdrop-blur-lg">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-3 py-2 shadow-header backdrop-blur-lg">
         <Link
           to="/"
           // The logo carries the name in its own artwork, so no wordmark beside
@@ -112,7 +112,7 @@ export function SiteHeader() {
         <nav
           id="mobile-nav"
           aria-label="التنقل الرئيسي"
-          className="mx-auto mt-2 flex max-h-[70svh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-line bg-page/95 p-2 shadow-[0_18px_40px_-28px_rgba(0,120,72,0.5)] backdrop-blur-lg md:hidden"
+          className="mx-auto mt-2 flex max-h-[70svh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-line bg-page/95 p-2 shadow-menu backdrop-blur-lg md:hidden"
         >
           {pages.map((page) => (
             <NavLink

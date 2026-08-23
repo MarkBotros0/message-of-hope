@@ -89,7 +89,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-4 py-4 text-center text-sm leading-5 text-on-ink sm:px-6 sm:text-start">
+        <div className="mx-auto max-w-6xl px-4 py-4 text-center text-sm leading-5 text-on-ink sm:px-6">
           © {year} رسالة أمل — جميع الحقوق محفوظة.
         </div>
       </div>

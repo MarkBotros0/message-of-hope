@@ -28,9 +28,12 @@ export function ServicePhotoTiles() {
                 decoding="async"
                 className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
               />
+              {/* The wash is there to seat the heading, not to tint the photo,
+                  so it holds its weight only across the bottom band and is
+                  gone by the middle of the frame. */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-t from-brand/90 via-brand/35 to-brand/5"
+                className="absolute inset-0 bg-gradient-to-t from-brand/75 via-brand/10 via-30% to-transparent"
               />
 
               <div className="absolute inset-x-0 bottom-0 p-5">
