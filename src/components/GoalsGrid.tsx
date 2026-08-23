@@ -12,59 +12,42 @@ function ordinal(n: number): string {
     .join('')
 }
 
-/** Numbered goal tiles, alternating tint and ink like the design's paired
- *  cards. Each goal may carry extra clarifying notes from the document. */
+/** Numbered goal tiles, all on the one tint surface — the goals are a set of
+ *  equals, and alternating a dark tile through them read as though every other
+ *  goal were the important one. Each may carry extra clarifying notes from the
+ *  document. */
 export function GoalsGrid({ items }: { items: NamedItem[] }) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {items.map((item, i) => {
-        const dark = i % 2 === 1
-        return (
-          <Tile
-            key={item.title}
-            tone={dark ? 'ink' : 'tint'}
-            className="p-7 sm:p-8"
-          >
-            <span
-              className={`mb-5 grid h-12 w-12 place-items-center rounded-2xl font-display text-lg font-bold ${
-                dark ? 'bg-leaf text-ink' : 'bg-brand text-white'
-              }`}
-            >
+      {items.map((item, i) => (
+        <Tile key={item.title} tone="tint" className="p-7 sm:p-8">
+          {/* Numeral and title share a row, so the tile opens on its name
+              rather than on a badge with the name underneath. */}
+          <div className="flex items-center gap-4">
+            <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-brand font-display text-lg font-bold text-white">
               {ordinal(i + 1)}
             </span>
-            <h3
-              className={`text-xl font-bold sm:text-2xl ${dark ? 'text-white' : ''}`}
-            >
+            <h3 className="text-xl leading-snug font-bold sm:text-2xl">
               {item.title}
             </h3>
-            <p
-              className={`mt-3 leading-loose ${dark ? 'text-on-ink' : 'text-body'}`}
-            >
-              {item.body}
-            </p>
+          </div>
+          <p className="mt-4 leading-loose text-body">{item.body}</p>
 
-            {item.notes && (
-              <ul
-                className={`mt-5 space-y-3 border-t pt-5 text-[0.95rem] leading-loose ${
-                  dark ? 'border-white/15 text-on-ink' : 'border-brand/15 text-body'
-                }`}
-              >
-                {item.notes.map((note) => (
-                  <li key={note} className="flex gap-3">
-                    <span
-                      aria-hidden="true"
-                      className={`mt-3 h-1.5 w-1.5 shrink-0 rounded-full ${
-                        dark ? 'bg-leaf' : 'bg-brand'
-                      }`}
-                    />
-                    <span>{note}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Tile>
-        )
-      })}
+          {item.notes && (
+            <ul className="mt-5 space-y-3 border-t border-brand/15 pt-5 text-[0.95rem] leading-loose text-body">
+              {item.notes.map((note) => (
+                <li key={note} className="flex gap-3">
+                  <span
+                    aria-hidden="true"
+                    className="mt-3 h-1.5 w-1.5 shrink-0 rounded-full bg-brand"
+                  />
+                  <span>{note}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Tile>
+      ))}
     </div>
   )
 }

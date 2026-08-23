@@ -44,7 +44,7 @@ export function SubMinistryTabs({ ministry, sub }: SubMinistryTabsProps) {
         tabIndex={0}
         className="[animation:fadeIn_0.35s_ease] focus-visible:outline-none"
       >
-        <SectionBody section={section} showStats />
+        <SectionBody section={section} />
       </div>
     </div>
   )

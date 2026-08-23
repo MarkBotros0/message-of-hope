@@ -8,23 +8,20 @@ import type { MinistrySection } from '../data/ministries'
 
 interface SectionBodyProps {
   section: MinistrySection
-  /** Sub-ministry sections render their own stat tiles; the single-section
-   *  pages show them in the hero instead. */
-  showStats?: boolean
 }
 
 /** Renders every band a ministry section can have, in reading order:
  *  intro → vision → verse → goals → services → target groups → closing.
  *  Bands with no data are skipped. Contact details are the footer's job on
  *  every page, so a service page ends on its own closing paragraph. */
-export function SectionBody({ section, showStats = false }: SectionBodyProps) {
+export function SectionBody({ section }: SectionBodyProps) {
   return (
     <>
       {(section.heading || section.intro?.length) && (
-        <SectionBand title={section.heading}>
+        <SectionBand title={section.heading} banner>
           {section.intro?.length ? (
             <Tile className="p-7 sm:p-9">
-              <div className="max-w-[75ch] space-y-5">
+              <div className="mx-auto max-w-[75ch] space-y-5">
                 {section.intro.map((text) => (
                   <p key={text} className="leading-loose">
                     {text}
@@ -35,29 +32,6 @@ export function SectionBody({ section, showStats = false }: SectionBodyProps) {
           ) : null}
         </SectionBand>
       )}
-
-      {showStats && section.stats?.length ? (
-        <SectionBand>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {section.stats.map((stat, i) => (
-              <Tile
-                key={stat.label}
-                tone={i === 0 ? 'leaf' : 'tint'}
-                className="p-7"
-              >
-                <span
-                  className={`font-display text-2xl font-extrabold sm:text-3xl ${
-                    i === 0 ? 'text-ink' : 'text-brand'
-                  }`}
-                >
-                  {stat.value}
-                </span>
-                <p className="mt-1 font-semibold">{stat.label}</p>
-              </Tile>
-            ))}
-          </div>
-        </SectionBand>
-      ) : null}
 
       {section.vision && (
         <SectionBand id="vision">
@@ -80,19 +54,37 @@ export function SectionBody({ section, showStats = false }: SectionBodyProps) {
       )}
 
       {section.goals && (
-        <SectionBand id="goals" title={section.goals.label}>
+        <SectionBand id="goals" title={section.goals.label} banner>
           <GoalsGrid items={section.goals.items} />
         </SectionBand>
       )}
 
       {section.services && (
-        <SectionBand id="services" title={section.services.label}>
+        <SectionBand id="services" title={section.services.label} banner>
+          {/* The section's headline figures ride under the heading as badges.
+              Every section that carries stats also carries this band. */}
+          {section.stats?.length ? (
+            <ul className="mb-6 flex flex-wrap justify-center gap-2">
+              {section.stats.map((stat) => (
+                <li
+                  key={stat.label}
+                  className="rounded-full bg-sage-tint px-4 py-2 text-sm leading-6"
+                >
+                  <span className="font-bold text-ink">{stat.label}</span>
+                  <span aria-hidden="true" className="mx-2 text-leaf-dark">
+                    ·
+                  </span>
+                  <span className="font-bold text-brand">{stat.value}</span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
           <ServicesTile items={section.services.items} />
         </SectionBand>
       )}
 
       {section.audience && (
-        <SectionBand title={section.audience.label}>
+        <SectionBand title={section.audience.label} banner>
           <AudienceTile items={section.audience.items} />
         </SectionBand>
       )}
@@ -100,7 +92,7 @@ export function SectionBody({ section, showStats = false }: SectionBodyProps) {
       {section.outro && (
         <SectionBand>
           <Tile tone="tint" className="p-7 sm:p-9">
-            <p className="max-w-[75ch] leading-loose">{section.outro}</p>
+            <p className="mx-auto max-w-[75ch] leading-loose">{section.outro}</p>
           </Tile>
         </SectionBand>
       )}

@@ -16,10 +16,8 @@ export function MinistryLayout({ ministry, sub }: MinistryLayoutProps) {
   return (
     <main id="main" className="mx-auto max-w-6xl px-4 pb-14 sm:px-6">
       <ServiceHero
-        eyebrow={ministry.eyebrow}
         title={ministry.title}
         photo={ministry.cardPhoto}
-        stats={multi ? [] : first.stats}
       />
 
       {multi ? (

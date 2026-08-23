@@ -1,7 +1,7 @@
 import { Tile } from './Tile'
 
 interface QuoteTileProps {
-  /** Small leaf-green eyebrow above the quote (e.g. "الرؤية"). */
+  /** Names the tile — "الرؤية", "من الكتاب المقدس". */
   label: string
   text: string
   /** Attribution line, e.g. a scripture reference. */
@@ -10,8 +10,10 @@ interface QuoteTileProps {
   size?: 'display' | 'prose'
 }
 
-/** The dark ink tile with a leaf glow — used for the vision, the programme
- *  goal and the scripture verse. */
+/** The brand-green tile with a leaf glow — used for the vision, the programme
+ *  goal and the scripture verse. Brand rather than ink: ink is the footer's
+ *  near-black, and a slab of it in the middle of a page reads as a hole rather
+ *  than as part of the palette. */
 export function QuoteTile({
   label,
   text,
@@ -26,15 +28,23 @@ export function QuoteTile({
       : 'max-w-none text-lg leading-loose text-white/90'
 
   return (
-    <Tile tone="ink" className="relative overflow-hidden p-8 sm:p-12 lg:p-16">
+    <Tile tone="brand" className="relative overflow-hidden p-8 sm:p-12 lg:p-16">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -bottom-20 -right-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.3),transparent_70%)]"
+        className="pointer-events-none absolute -bottom-20 -right-10 h-72 w-72 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.35),transparent_70%)]"
       />
-      <p className="relative mb-5 text-sm font-bold text-leaf">{label}</p>
+      {/* The label names the tile — on a vision paragraph it is the only
+          heading the block has, so it carries the display face at heading
+          size rather than sitting there as a small eyebrow. White, not leaf:
+          leaf on brand green is under 3:1. */}
+      <p className="relative font-display text-xl font-extrabold text-white sm:text-2xl">
+        {label}
+      </p>
+      {/* The accent survives as the rule the section headings carry. */}
+      <span className="relative mt-4 mb-6 block h-1.5 w-14 rounded-full bg-leaf" />
       <blockquote className={`relative ${type}`}>{text}</blockquote>
       {source && (
-        <p className="relative mt-5 text-sm font-bold text-leaf">{source}</p>
+        <p className="relative mt-5 text-sm font-bold text-white/90">{source}</p>
       )}
     </Tile>
   )

@@ -66,7 +66,6 @@ export interface Ministry {
   slug: string
   navLabel: string
   title: string
-  eyebrow?: string
   /** One-line summary for the nav menu and the service tiles. Condensed from
    *  this ministry's own source text — no new claims are introduced. */
   navBlurb?: string
@@ -82,7 +81,6 @@ export interface Ministry {
 const children: Ministry = {
   slug: 'children',
   navLabel: 'الطفل المصري',
-  eyebrow: 'من خدماتنا',
   title: 'خدمة الطفل المصري',
   navBlurb:
     'فصول تعليمية ومدرسة صيفية وخدمات صحية وروحية لأطفال القرى الأكثر احتياجًا.',
@@ -185,7 +183,6 @@ const children: Ministry = {
 const women: Ministry = {
   slug: 'women',
   navLabel: 'السيدات',
-  eyebrow: 'من خدماتنا',
   title: 'خدمة السيدات',
   navBlurb:
     'تلمذة ومجموعات دعم وتمكين اقتصادي للسيدات المعيلات واللاجئات.',
@@ -243,7 +240,6 @@ const women: Ministry = {
 const mercy: Ministry = {
   slug: 'mercy',
   navLabel: 'الرحمة',
-  eyebrow: 'من خدماتنا',
   title: 'خدمة الرحمة',
   navBlurb:
     'دعم إنساني عملي للأسر الأكثر احتياجًا، وللاجئين السودانيين في مصر.',

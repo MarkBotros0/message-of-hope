@@ -45,7 +45,10 @@ export function TabStrip({ labels, active, onChange, idPrefix }: TabStripProps) 
     <div
       role="tablist"
       onKeyDown={onKeyDown}
-      className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible [&::-webkit-scrollbar]:hidden"
+      // Centred from `sm`, with the rest of the page. On phones the strip
+      // scrolls instead, and centring there would push the first tab
+      // half off the start edge.
+      className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible [&::-webkit-scrollbar]:hidden"
     >
       {labels.map((label, i) => {
         const selected = i === active

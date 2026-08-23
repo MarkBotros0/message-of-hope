@@ -1,20 +1,34 @@
 import { Check } from 'lucide-react'
-import { Tile } from './Tile'
+import { topicIcon } from './topicIcons'
 
-/** Checklist of services or interventions, laid out two-up inside one tile. */
+/** A ministry's services list as small cards, two to a row: a round icon chip
+ *  and the line beside it. Each entry carries an icon for what it actually is;
+ *  anything the map does not name falls back to a tick. */
 export function ServicesTile({ items }: { items: string[] }) {
   return (
-    <Tile className="p-7 sm:p-9">
-      <ul className="grid gap-x-10 gap-y-5 md:grid-cols-2">
-        {items.map((item) => (
-          <li key={item} className="flex items-start gap-3">
-            <span className="mt-1.5 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-sage-tint text-brand">
-              <Check size={15} strokeWidth={2.6} />
+    <ul className="mx-auto grid max-w-4xl gap-3 sm:grid-cols-2">
+      {items.map((item, i) => {
+        const Icon = topicIcon(item) ?? Check
+        return (
+          <li
+            key={item}
+            className={`flex items-center gap-3 rounded-2xl border border-line bg-white p-4 shadow-card ${
+              // A last row holding one card centres under the pair above.
+              items.length % 2 === 1 && i === items.length - 1
+                ? 'sm:col-span-2 sm:w-[calc((100%-0.75rem)/2)] sm:justify-self-center'
+                : ''
+            }`}
+          >
+            <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sage-tint text-brand">
+              <Icon size={18} aria-hidden="true" />
             </span>
-            <span className="leading-loose">{item}</span>
+            {/* Start-aligned so an entry that wraps keeps one edge. */}
+            <span className="text-start text-sm leading-relaxed font-semibold text-body">
+              {item}
+            </span>
           </li>
-        ))}
-      </ul>
-    </Tile>
+        )
+      })}
+    </ul>
   )
 }
