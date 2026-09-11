@@ -27,7 +27,7 @@ import {
  *  Keyed on the client's own wording, so an edited line falls back to the tick
  *  rather than keeping an icon that no longer fits. */
 const icons: Record<string, LucideIcon> = {
-  // خدمة الطفل المصري
+  // خدمة الطفل
   'فصول تعليمية للأطفال تقدم منهجًا متكاملًا (تعليمي – روحي – نفسي – صحي)':
     GraduationCap,
   'الخدمات الصحية (كشف – تحاليل – علاج – عمليات)': Stethoscope,
