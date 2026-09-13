@@ -39,22 +39,15 @@
 
 @layer base {
   :root {
-    /* Height of the header bar pinned to the top of the viewport (its content
-       row; the hairline under it is not counted). The الرحمة page sticks its
-       tab bar at exactly this line, and anchor offsets are derived from it. */
-    --header-h: 4.5rem;
+    /* Height of the sticky tab bar on the الرحمة page, where there is one;
+       anchor offsets clear it. The header itself scrolls away with the page,
+       so it never needs clearing. */
     --tabbar-h: 0rem;
 
     /* Shadows are cast in a deep brand green, never neutral grey — a grey
        shadow on this page reads as dirt. Not a colour utility: the shadow
        scale above is the only thing that reads it. */
     --shadow-rgb: 0 84 51;
-  }
-
-  @media (min-width: 640px) {
-    :root {
-      --header-h: 5rem;
-    }
   }
 
   html {
@@ -90,8 +83,8 @@
 }
 
 @utility scroll-anchor {
-  /* Clear the pinned header (and tab bar, where present) when jumped to. */
-  scroll-margin-top: calc(var(--header-h) + var(--tabbar-h) + 1.5rem);
+  /* Clear the sticky tab bar, where present, when jumped to. */
+  scroll-margin-top: calc(var(--tabbar-h) + 1.5rem);
 }
 
 @utility ltr-num {

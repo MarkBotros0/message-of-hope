@@ -13,9 +13,10 @@ const pages = [
 
 const navLink = 'rounded-full px-4 py-2 text-base transition'
 
-/** Site header, pinned to the top of the viewport: brand mark on one side, the
- *  top-level pages plus the الخدمات dropdown on the other. On phones everything
- *  collapses into a panel where الخدمات becomes an accordion. */
+/** Site header — a plain bar at the top of the page that scrolls away with
+ *  it: brand mark on one side, the top-level pages plus the الخدمات dropdown
+ *  on the other. On phones everything collapses into a panel where الخدمات
+ *  becomes an accordion. */
 export function SiteHeader() {
   const [logoOk, setLogoOk] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -49,8 +50,9 @@ export function SiteHeader() {
   }, [menuOpen])
 
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-page/90 shadow-header backdrop-blur-lg">
-      {/* Fixed height so --header-h (index.css) stays accurate. */}
+    // Not sticky: the bar scrolls off with the page. `relative z-50` only keeps
+    // the الخدمات dropdown above whatever follows the header in the flow.
+    <header className="relative z-50 border-b border-line bg-page shadow-header">
       <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6">
         <Link
           to="/"
