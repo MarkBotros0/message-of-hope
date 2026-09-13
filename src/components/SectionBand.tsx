@@ -41,8 +41,8 @@ export function SectionBand({
             id={headingId}
             className={
               banner
-                ? 'text-2xl font-extrabold text-balance sm:text-3xl'
-                : 'text-3xl font-extrabold text-balance sm:text-4xl lg:text-5xl'
+                ? 'text-2xl font-bold text-balance sm:text-3xl'
+                : 'text-3xl font-bold text-balance sm:text-4xl lg:text-5xl'
             }
           >
             {title}

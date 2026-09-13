@@ -16,9 +16,13 @@
   --color-line: #e2e9e2; /* hairline tile edges */
   --color-page: #fbfcfb;
 
-  /* Type — Alexandria for display, Mada for running text. */
-  --font-sans: 'Mada', system-ui, 'Segoe UI', sans-serif;
-  --font-display: 'Alexandria', system-ui, 'Segoe UI', sans-serif;
+  /* Type — IBM Plex Sans Arabic throughout, for headings and running text
+     alike; the client asked for something more formal but still friendly.
+     The family tops out at 700, so nothing in the markup asks for heavier.
+     `--font-display` is kept as a token so the `font-display` utility still
+     names the heading role, even though it now resolves to the same face. */
+  --font-sans: 'IBM Plex Sans Arabic', system-ui, 'Segoe UI', sans-serif;
+  --font-display: 'IBM Plex Sans Arabic', system-ui, 'Segoe UI', sans-serif;
 
   /* Depth. The page and the tiles are both near-white, so a tile is only a
      tile because of what sits under it — every surface carries a resting
@@ -35,16 +39,22 @@
 
 @layer base {
   :root {
-    /* Where the floating header pill ends: its own height plus the `top-3` it
-       floats on. The الرحمة page sticks its tab bar at exactly this line, and
-       anchor offsets are derived from it. */
-    --header-h: 5.625rem;
+    /* Height of the header bar pinned to the top of the viewport (its content
+       row; the hairline under it is not counted). The الرحمة page sticks its
+       tab bar at exactly this line, and anchor offsets are derived from it. */
+    --header-h: 4.5rem;
     --tabbar-h: 0rem;
 
     /* Shadows are cast in a deep brand green, never neutral grey — a grey
        shadow on this page reads as dirt. Not a colour utility: the shadow
        scale above is the only thing that reads it. */
     --shadow-rgb: 0 84 51;
+  }
+
+  @media (min-width: 640px) {
+    :root {
+      --header-h: 5rem;
+    }
   }
 
   html {
@@ -80,7 +90,7 @@
 }
 
 @utility scroll-anchor {
-  /* Clear the floating header (and tab bar, where present) when jumped to. */
+  /* Clear the pinned header (and tab bar, where present) when jumped to. */
   scroll-margin-top: calc(var(--header-h) + var(--tabbar-h) + 1.5rem);
 }
 

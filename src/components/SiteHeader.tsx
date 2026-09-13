@@ -13,9 +13,9 @@ const pages = [
 
 const navLink = 'rounded-full px-4 py-2 text-base transition'
 
-/** Floating pill header: brand mark on one side, the top-level pages plus the
- *  الخدمات dropdown on the other. On phones everything collapses into a panel
- *  where الخدمات becomes an accordion. */
+/** Site header, pinned to the top of the viewport: brand mark on one side, the
+ *  top-level pages plus the الخدمات dropdown on the other. On phones everything
+ *  collapses into a panel where الخدمات becomes an accordion. */
 export function SiteHeader() {
   const [logoOk, setLogoOk] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -49,13 +49,14 @@ export function SiteHeader() {
   }, [menuOpen])
 
   return (
-    <header className="sticky top-3 z-50 px-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 rounded-full border border-line bg-page/80 px-4 py-2.5 shadow-header backdrop-blur-lg">
+    <header className="sticky top-0 z-50 border-b border-line bg-page/90 shadow-header backdrop-blur-lg">
+      {/* Fixed height so --header-h (index.css) stays accurate. */}
+      <div className="mx-auto flex h-[4.5rem] max-w-6xl items-center justify-between gap-4 px-4 sm:h-20 sm:px-6">
         <Link
           to="/"
           // The logo carries the name in its own artwork, so no wordmark beside
           // it. The link's accessible name is the aria-label below.
-          className="flex shrink-0 items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+          className="flex shrink-0 items-center rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
           aria-label="رسالة أمل — الصفحة الرئيسية"
         >
           {logoOk ? (
@@ -63,12 +64,11 @@ export function SiteHeader() {
               src="/logo-mark.png"
               alt=""
               // The mark carries its own rounded plate, so no clipping here.
-              // It sets the height of the whole pill.
-              className="h-14 w-14 object-contain"
+              className="h-12 w-12 object-contain sm:h-14 sm:w-14"
               onError={() => setLogoOk(false)}
             />
           ) : (
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-brand">
+            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand sm:h-14 sm:w-14">
               <Sun className="text-sun" size={26} strokeWidth={2.2} />
             </span>
           )}
@@ -108,12 +108,12 @@ export function SiteHeader() {
         </button>
       </div>
 
-      {/* Mobile nav panel */}
+      {/* Mobile nav panel — hangs from the bar and shares its surface. */}
       {menuOpen && (
         <nav
           id="mobile-nav"
           aria-label="التنقل الرئيسي"
-          className="mx-auto mt-2 flex max-h-[70svh] max-w-6xl flex-col gap-1 overflow-y-auto rounded-3xl border border-line bg-page/95 p-2 shadow-menu backdrop-blur-lg md:hidden"
+          className="mx-auto flex max-h-[70svh] max-w-6xl flex-col gap-1 overflow-y-auto border-t border-line px-4 pb-3 pt-2 sm:px-6 md:hidden"
         >
           {pages.map((page) => (
             <NavLink

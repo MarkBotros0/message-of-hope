@@ -87,7 +87,7 @@ export function AudienceTile({ items }: { items: AudienceItem[] }) {
                 {toArabicNumeral(i + 1)}
               </span>
               {item.share && (
-                <span className="font-display text-3xl leading-none font-extrabold text-brand sm:text-4xl">
+                <span className="font-display text-3xl leading-none font-bold text-brand sm:text-4xl">
                   {item.share}
                 </span>
               )}
@@ -188,7 +188,7 @@ export function AudienceTile({ items }: { items: AudienceItem[] }) {
                 textAnchor="middle"
                 dominantBaseline="central"
                 fill={slice.labelColour}
-                className="font-display text-[15px] font-extrabold"
+                className="font-display text-[15px] font-bold"
               >
                 {items[i].share}
               </text>

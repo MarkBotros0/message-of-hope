@@ -9,7 +9,7 @@ export function MinistryPage() {
   if (!ministry) {
     return (
       <main id="main" className="mx-auto max-w-6xl px-4 py-20 text-center sm:px-6">
-        <h1 className="text-3xl font-extrabold">الصفحة غير موجودة</h1>
+        <h1 className="text-3xl font-bold">الصفحة غير موجودة</h1>
         <p className="mt-3 text-body">لم نتمكّن من العثور على هذه الخدمة.</p>
         <Link
           to="/"

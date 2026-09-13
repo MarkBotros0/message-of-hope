@@ -41,7 +41,7 @@ export function ServicePhotoTiles() {
                 <span className="mb-3 block h-1 w-10 rounded-full bg-leaf transition-all duration-300 group-hover:w-16" />
                 {/* The nav labels are shorthand (السيدات…); on a tile standing
                     on its own the full "خدمة …" name reads better. */}
-                <h3 className="font-display text-xl font-extrabold text-white">
+                <h3 className="font-display text-xl font-bold text-white">
                   خدمة {service.label}
                 </h3>
               </div>

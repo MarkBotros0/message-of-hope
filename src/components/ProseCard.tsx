@@ -24,7 +24,7 @@ export function ProseCard({ label, text }: ProseCardProps) {
           {/* Heading and rule centre with the band headings elsewhere on the
               page; the paragraphs stay start-aligned, since centring several
               lines of prose leaves both edges ragged. */}
-          <h2 className="text-center font-display text-xl font-extrabold sm:text-2xl">
+          <h2 className="text-center font-display text-xl font-bold sm:text-2xl">
             {label}
           </h2>
           <span className="mx-auto mt-4 mb-6 block h-1.5 w-14 rounded-full bg-leaf" />

@@ -31,7 +31,7 @@ export function ServiceHero({
               aria-hidden="true"
               className="pointer-events-none absolute -top-16 -left-10 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(141,198,63,0.35),transparent_70%)]"
             />
-            <h1 className="relative text-2xl font-extrabold text-balance text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.25]">
+            <h1 className="relative text-2xl font-bold text-balance text-white sm:text-3xl lg:text-[2.5rem] lg:leading-[1.25]">
               {title}
             </h1>
             {/* The same leaf rule the section headings carry. */}

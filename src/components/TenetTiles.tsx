@@ -51,12 +51,12 @@ export function TenetTiles({
             <div className="flex items-start gap-3">
               <span
                 aria-hidden="true"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-leaf font-display text-base font-extrabold text-ink"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-leaf font-display text-base font-bold text-ink"
               >
                 {toArabicNumeral(i + 1)}
               </span>
               <div className="min-w-0">
-                <h3 className="font-display text-lg leading-snug font-extrabold">
+                <h3 className="font-display text-lg leading-snug font-bold">
                   {item.title}
                 </h3>
                 {englishTitles && (

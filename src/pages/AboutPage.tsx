@@ -33,27 +33,29 @@ export function AboutPage() {
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         {/* One tile, two labelled rows, rather than two stacked tiles. The
-            label sits in its own narrow column with the text beside it, so a
-            one-line vision and a two-paragraph mission each fill their row
+            label sits in its own narrow column with the text beside it, so the
+            vision paragraph and the two-paragraph mission each fill their row
             instead of leaving a tile mostly empty, and the pair reads as one
             statement of purpose with two parts. */}
         <SectionBand title="رؤيتنا ومهمتنا" banner>
           <Tile className="overflow-hidden">
             <div className={aboutRow}>
               <div>
-                <h3 className="font-display text-lg font-extrabold">رؤيتنا</h3>
+                <h3 className="font-display text-lg font-bold">رؤيتنا</h3>
                 <span className="mt-2 block h-1 w-10 rounded-full bg-leaf" />
               </div>
               {/* The vision outranks the mission prose on size, not on weight —
-                  it is the aspiration the rest of the page answers to. */}
-              <p className="text-xl leading-[1.9] text-ink sm:text-2xl sm:leading-[1.8]">
+                  it is the aspiration the rest of the page answers to. One step
+                  up rather than two: at a full paragraph, 2xl set four heavy
+                  lines that shouted over the mission instead of leading it. */}
+              <p className="text-lg leading-[1.9] text-ink sm:text-xl sm:leading-[1.8]">
                 {about.vision}
               </p>
             </div>
 
             <div className={`border-t border-line ${aboutRow}`}>
               <div>
-                <h3 className="font-display text-lg font-extrabold">مهمتنا</h3>
+                <h3 className="font-display text-lg font-bold">مهمتنا</h3>
                 <span className="mt-2 block h-1 w-10 rounded-full bg-leaf" />
               </div>
               <div className="space-y-4">
