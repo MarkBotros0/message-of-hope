@@ -367,13 +367,54 @@ export const site = {
 } as const
 
 /** Every photo the client has supplied, in ministry order. The home carousel
- *  is the only place they are all shown together. */
+ *  and the من نحن puzzle are the two places they are all shown together. */
 export const highlightPhotos: ArchivePhoto[] = ministries.flatMap((m) =>
   m.sections.flatMap((s) => s.archive ?? []),
 )
 
-/** A named statement — one of the أهداف the work rests on, or one of the قيم
- *  it is held to. */
+/** One piece of the من نحن banner: a ministry's photo, with the ministry it
+ *  belongs to for the banner's accessible name. */
+export interface PuzzlePieceContent {
+  label: string
+  /** Path under `public/archive/`. */
+  src: string
+}
+
+// The seven archive photos as puzzle pieces, named by ministry and shot so
+// the two arrangements below can be read at a glance.
+const piece = (label: string, src: string): PuzzlePieceContent => ({ label, src })
+const child1 = piece('خدمة الطفل', '/archive/egyptian-children-class-activities.jpg')
+const child2 = piece('خدمة الطفل', '/archive/egyptian-children-teacher-with-child.jpg')
+const child3 = piece('خدمة الطفل', '/archive/egyptian-children-praying-in-class.jpg')
+const women1 = piece('خدمة السيدات', '/archive/women-praise-meeting.jpg')
+const mercy1 = piece('خدمة الرحمة', '/archive/mercy-house-before-roof-courtyard.jpg')
+const mercy2 = piece('خدمة الرحمة', '/archive/mercy-village-home-interior.jpg')
+const mercy3 = piece('خدمة الرحمة', '/archive/mercy-sewing-microproject.jpg')
+
+/** The من نحن banner from `sm` up: a 5 × 3 jigsaw of the three ministries.
+ *  Each list reads right to left, top row first. With seven photos for
+ *  fifteen pieces every shot appears twice and the السيدات photo — the only
+ *  one that service has — a third time, in the corners and the centre. The
+ *  order keeps ministries apart: no piece shares an edge with another of its
+ *  own ministry, and no photo touches its own repeat, even at a corner. */
+export const servicePuzzleWide: PuzzlePieceContent[] = [
+  women1, mercy1, child1, mercy2, child2,
+  mercy2, child2, women1, child3, mercy1,
+  child3, mercy3, child1, mercy3, women1,
+]
+
+/** The same banner on phones: 2 × 4, every photo once and the السيدات photo
+ *  again at the opposite end of its column. A separate order rather than a
+ *  prefix of the wide one — with only three ministries, no single sequence
+ *  keeps them apart in both grids. */
+export const servicePuzzleNarrow: PuzzlePieceContent[] = [
+  women1, child1,
+  child2, mercy1,
+  mercy2, child3,
+  women1, mercy3,
+]
+
+/** A named statement — one of the قيم the work is held to. */
 export interface Tenet {
   title: string
   /** The English name the client's document gives alongside the Arabic. Kept
@@ -383,11 +424,10 @@ export interface Tenet {
 }
 
 // ---------------------------------------------------------------------------
-// من نحن — the organisation's own statement of identity: vision, mission, the
-// three goals the work rests on, and the seven values it is held to. This is
-// the shared statement of purpose, carried across from أمل جديد's document
-// with the organisation's own name in place of theirs; nothing is paraphrased
-// beyond that substitution.
+// من نحن — the organisation's own statement of identity: vision, mission, and
+// the seven values it is held to. This is the shared statement of purpose,
+// carried across from أمل جديد's document with the organisation's own name in
+// place of theirs; nothing is paraphrased beyond that substitution.
 // ---------------------------------------------------------------------------
 export const about = {
   vision:
@@ -396,23 +436,6 @@ export const about = {
     'نلتزم في رسالة أمل بأن نُعلن محبة المسيح ورجاءه في كنائسنا، من خلال الوصول للناس غير الموصول إليهم برسالة الإنجيل، ومرافقتهم في مسيرة تلمذة حيّة، وتمكين الكنائس لتعيش دعوتها وتخدم مجتمعاتها بفعالية.',
     'نحرص أن نحقق هذا الالتزام بالشراكة مع الكنائس المحلية، وبطرق تحترم السياقات الثقافية والاجتماعية، وتُراعي احتياجات الأفراد والمجتمعات.',
   ],
-  goals: [
-    {
-      title: 'الكرازة',
-      titleEn: 'Evangelism',
-      body: 'مشاركة الناس برسالة محبة المسيح وخلاصه، ودعوتهم لاتباعه كتلاميذ حقيقيين يعيشون له ويشبهونه. مع مراعاة السياقات الثقافية والاجتماعية، والحساسية الدينية والسياسية، وخصوصية كل الفئات المختلفة.',
-    },
-    {
-      title: 'التلمذة',
-      titleEn: 'Discipleship',
-      body: 'مسيرة مستمرة نعيشها مع أشخاص يسعون لاتباع المسيح، تشمل التعليم، والتشكيل الروحي، والرعاية، بهدف أن ينمو التلميذ ليحيا بحسب صورة المسيح، ويشارك الإنجيل مع الآخرين — مع مراعاة اختلاف النِسب بين هذه المكونات حسب مرحلة النضج الروحي، والاحتياجات النفسية، والسياق الثقافي، والعمر.',
-    },
-    {
-      title: 'تمكين الكنائس',
-      titleEn: 'Church Empowerment',
-      body: 'العمل مع الكنائس المحلية لتشجيعها وتقويتها لتعيش دعوتها كجسد حيّ للمسيح، ينمو في العمق الروحي، ويُعبّر عمليًا عن محبة المسيح من خلال أعمال الرحمة. يشمل ذلك بناء القدرات (Capacity Building) للقادة والفرق والخدمات، مع مراعاة السياق المحلي واحتياجات كل كنيسة ودورها في مجتمعها.',
-    },
-  ] as Tenet[],
   values: [
     {
       title: 'النزاهة',

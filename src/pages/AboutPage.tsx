@@ -1,4 +1,5 @@
 import { SectionBand } from '../components/SectionBand'
+import { ServicesPuzzle } from '../components/ServicesPuzzle'
 import { TenetTiles } from '../components/TenetTiles'
 import { Tile } from '../components/Tile'
 import { about } from '../data/ministries'
@@ -9,28 +10,20 @@ import { about } from '../data/ministries'
  *  9rem column would leave the prose nothing to sit in. */
 const aboutRow = 'grid gap-4 p-7 sm:p-9 md:grid-cols-[9rem_1fr] md:gap-10'
 
-/** من نحن — the organisation's own statement of itself: vision, mission, the
- *  three goals the work rests on, and the seven values it is held to. Every
- *  line is the client's own text (see `about` in `data/ministries`). */
+/** من نحن — the organisation's own statement of itself: vision, mission, and
+ *  the seven values it is held to. Every line is the client's own text (see
+ *  `about` in `data/ministries`). */
 export function AboutPage() {
   return (
     <main id="main">
-      {/* The banner is the whole opening: the photo is the statement, and the
-          page's own title follows on the tiles below rather than fighting a
-          scrim. Full-bleed on phones and framed as a tile from `sm`, the same
-          way the home carousel sits. */}
-      <div className="mx-auto max-w-6xl sm:px-6 sm:pt-8">
-        <div className="h-72 overflow-hidden border-b border-line shadow-card sm:h-[26rem] sm:rounded-3xl sm:border lg:h-[32rem]">
-          {/* Taller than the photo's own 2.83:1 would give at this width.
-              `object-cover` scales it up and trims the sides rather than
-              distorting it — the globe and hands sit centre frame, so the crop
-              takes only sky. */}
-          <img
-            src="/about-hero.jpg"
-            alt="يدان تحملان الكرة الأرضية وقد أضاءت عليها حدود مصر، وحمائم بيضاء تحلّق حولها في سماء عند الغروب"
-            fetchPriority="high"
-            className="h-full w-full object-cover object-center"
-          />
+      {/* Full-bleed banner, flush under the header: the ministries as the
+          pieces of one puzzle. It carries no heading of its own — the picture
+          is the statement, and the page's title follows on the tiles below.
+          Capped at 90rem so the pieces never grow past a banner's height on a
+          wide monitor; the rule underneath still runs edge to edge. */}
+      <div className="border-b border-line">
+        <div className="mx-auto max-w-[90rem]">
+          <ServicesPuzzle />
         </div>
       </div>
 
@@ -72,10 +65,6 @@ export function AboutPage() {
               </div>
             </div>
           </Tile>
-        </SectionBand>
-
-        <SectionBand id="goals" title="أهدافنا الأساسية" banner>
-          <TenetTiles items={about.goals} columns={3} />
         </SectionBand>
 
         <SectionBand id="values" title="قيمنا الأساسية" className="pb-14" banner>
